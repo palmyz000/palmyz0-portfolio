@@ -36,8 +36,8 @@ Built with **Django** and **Tailwind CSS**, and deployed via **Vercel**, this pr
 **Suphawit MeeSak**
 *Junior Data Scientist / Junior AI Engineer*
 
-* 🌐 **Live Portfolio:** [suphawit-portfolio.vercel.app](https://palmyz0-portfolio.vercel.app/)
-* 💻 **GitHub Profile:** [palmyz000](https://github.com/palmyz000)
-* 🔗 **LinkedIn:** [Suphawit MeeSak](https://www.linkedin.com/in/suphawit-meesak/)
 * 📧 **Email:** Suphawit11@icloud.com
+* 🔗 **LinkedIn:** [Suphawit MeeSak](https://www.linkedin.com/in/suphawit-meesak/)
+* 💻 **GitHub:** [palmyz000](https://github.com/palmyz000)
 * 🤗 **Hugging Face:** [palmyz0](https://huggingface.co/palmyz0)
+* 🌐 **Portfolio:** [suphawit-portfolio.vercel.app](https://palmyz0-portfolio.vercel.app/)
