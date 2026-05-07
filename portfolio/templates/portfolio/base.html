@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Suphawit MeeSak | Portfolio{% endblock %}</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Kanit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Kanit', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        'primary-dark': '#0f172a',
+                        'secondary-dark': '#1e293b',
+                        'accent-blue': '#0ea5e9',
+                        'accent-green': '#10b981',
+                        'text-light': '#f8fafc',
+                        'text-muted': '#94a3b8',
+                        'bg-color': '#020617',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #020617;
+            color: #f8fafc;
+        }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #0ea5e9; }
+        
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-image: linear-gradient(to right, #0ea5e9, #10b981);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="antialiased font-sans leading-relaxed flex flex-col min-h-screen">
+
+    <!-- Loading Screen -->
+    <div id="loader" class="fixed inset-0 z-[100] bg-bg-color flex flex-col items-center justify-center transition-opacity duration-700">
+        <div class="w-full max-w-md px-6">
+            <div class="text-accent-green font-mono text-lg md:text-xl mb-4 min-h-[3rem] flex items-end">
+                <span id="terminal-text">> _</span>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="h-1 w-full bg-secondary-dark rounded overflow-hidden mt-6 relative">
+                <div id="loading-bar" class="h-full bg-gradient-to-r from-accent-blue to-accent-green w-0 transition-all duration-300"></div>
+            </div>
+            
+            <div class="mt-8 flex justify-between px-4">
+                <div class="w-3 h-3 bg-slate-700 rounded-full animate-ping data-node" style="animation-duration: 2s;"></div>
+                <div class="w-3 h-3 bg-slate-700 rounded-full animate-ping data-node" style="animation-duration: 2s; animation-delay: 0.5s;"></div>
+                <div class="w-3 h-3 bg-slate-700 rounded-full animate-ping data-node" style="animation-duration: 2s; animation-delay: 1s;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 bg-primary-dark/80 backdrop-blur-md border-b border-slate-800">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex-shrink-0 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-accent-blue to-accent-green flex items-center justify-center shadow-[0_0_15px_rgba(14,165,233,0.4)]">
+                        <i class="fas fa-brain text-white text-xl"></i>
+                    </div>
+                    <a href="{% url 'about' %}" class="flex flex-col group">
+                        <span class="font-bold text-xl tracking-wider text-white group-hover:text-accent-blue transition-colors font-mono">Suphawit MeeSak</span>
+                        <span class="text-[10px] text-accent-green font-mono tracking-widest uppercase mt-0.5">Data Scientist / AI Engineer</span>
+                    </a>
+                </div>
+                <!-- Desktop Menu -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8 font-mono text-sm">
+                        <a href="{% url 'about' %}" class="{% if request.resolver_match.url_name == 'about' %}text-accent-blue{% else %}text-text-muted hover:text-white{% endif %} transition-all duration-300 group flex items-center">
+                            <span class="text-accent-blue max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out mr-0 group-hover:mr-1">def</span>
+                            <span>about</span>
+                            <span class="text-slate-500 max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out ml-0 group-hover:ml-1">():</span>
+                        </a>
+                        <a href="{% url 'experience' %}" class="{% if request.resolver_match.url_name == 'experience' %}text-accent-blue{% else %}text-text-muted hover:text-white{% endif %} transition-all duration-300 group flex items-center">
+                            <span class="text-accent-blue max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out mr-0 group-hover:mr-1">def</span>
+                            <span>experience</span>
+                            <span class="text-slate-500 max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out ml-0 group-hover:ml-1">():</span>
+                        </a>
+                        <a href="{% url 'projects' %}" class="{% if request.resolver_match.url_name == 'projects' %}text-accent-blue{% else %}text-text-muted hover:text-white{% endif %} transition-all duration-300 group flex items-center">
+                            <span class="text-accent-blue max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out mr-0 group-hover:mr-1">def</span>
+                            <span>projects</span>
+                            <span class="text-slate-500 max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out ml-0 group-hover:ml-1">():</span>
+                        </a>
+                        <a href="{% url 'skills' %}" class="{% if request.resolver_match.url_name == 'skills' %}text-accent-blue{% else %}text-text-muted hover:text-white{% endif %} transition-all duration-300 group flex items-center">
+                            <span class="text-accent-blue max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out mr-0 group-hover:mr-1">def</span>
+                            <span>skills</span>
+                            <span class="text-slate-500 max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out ml-0 group-hover:ml-1">():</span>
+                        </a>
+                        <a href="{% url 'resume' %}" class="{% if request.resolver_match.url_name == 'resume' %}text-accent-green{% else %}text-text-muted hover:text-accent-green{% endif %} transition-all duration-300 group flex items-center">
+                            <span class="text-accent-blue max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out mr-0 group-hover:mr-1">def</span>
+                            <span>resume</span>
+                            <span class="text-slate-500 max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out ml-0 group-hover:ml-1">():</span>
+                        </a>
+                    </div>
+                </div>
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button class="text-text-muted hover:text-white">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow pt-28 pb-12 fade-in">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-primary-dark border-t border-slate-800 py-8 mt-auto relative overflow-hidden">
+        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[200px] bg-accent-blue/5 blur-[100px] rounded-full pointer-events-none"></div>
+        <div class="max-w-6xl mx-auto px-4 text-center relative z-10 flex flex-col items-center">
+            <p class="text-text-muted text-sm font-mono">&copy; 2026 palmyz0. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Loading Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // ตรวจสอบว่าเคยโหลดไปแล้วหรือยังใน session นี้
+            if(!sessionStorage.getItem('hasLoadedPortfolio')) {
+                const allTexts = [
+                    "import pandas as pd...",
+                    "import torch.nn as nn...",
+                    "Loading Data Pipeline...",
+                    "Initializing RAG Models...",
+                    "Optimizing Neural Weights...",
+                    "Running Backpropagation...",
+                    "Applying Gradient Descent...",
+                    "model.fit(X_train, y_train)...",
+                    "importing Agentic AI Frameworks..."
+                ];
+                
+                const shuffled = allTexts.sort(() => 0.5 - Math.random());
+                const texts = shuffled.slice(0, 3);
+                texts.push("System Ready. return 200;");
+                
+                const terminalEl = document.getElementById('terminal-text');
+                const loadingBar = document.getElementById('loading-bar');
+                const nodes = document.querySelectorAll('.data-node');
+                
+                let textIndex = 0;
+                let progress = 0;
+                
+                function updateLoader() {
+                    if (textIndex < texts.length) {
+                        terminalEl.innerHTML = `> ${texts[textIndex]}<span class="animate-pulse font-bold text-white">_</span>`;
+                        
+                        progress += (100 / texts.length);
+                        if(progress > 100) progress = 100;
+                        loadingBar.style.width = `${progress}%`;
+                        
+                        nodes.forEach(node => {
+                            if(Math.random() > 0.5) {
+                                node.classList.remove('bg-slate-700');
+                                node.classList.add('bg-accent-blue', 'shadow-[0_0_10px_#0ea5e9]');
+                            } else {
+                                node.classList.add('bg-slate-700');
+                                node.classList.remove('bg-accent-blue', 'shadow-[0_0_10px_#0ea5e9]');
+                            }
+                        });
+
+                        textIndex++;
+                        setTimeout(updateLoader, 300); // ความเร็วในการเปลี่ยนข้อความ
+                    } else {
+                        setTimeout(() => {
+                            const loader = document.getElementById('loader');
+                            loader.style.opacity = '0';
+                            setTimeout(() => {
+                                loader.style.display = 'none';
+                                sessionStorage.setItem('hasLoadedPortfolio', 'true');
+                            }, 400);
+                        }, 200);
+                    }
+                }
+                
+                setTimeout(updateLoader, 100);
+            } else {
+                // ถ้าเคยโหลดแล้ว ให้ซ่อนทันที
+                document.getElementById('loader').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

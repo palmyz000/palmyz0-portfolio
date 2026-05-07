@@ -1,0 +1,127 @@
+{% extends 'portfolio/base.html' %}
+
+{% block content %}
+<section id="skills" class="py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-12">
+            <h2 class="text-3xl font-bold text-white mb-2 flex items-center font-mono">
+                <span class="text-accent-green mr-3">In [2]:</span> profile.show_skills()
+            </h2>
+            <p class="text-slate-400 font-mono text-sm ml-8"><span class="text-accent-blue">Out[2]:</span> Loading Technical Stack & Certifications...</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+            
+            <!-- Group 1: Programming & Databases -->
+            <div class="bg-secondary-dark/40 backdrop-blur-md p-8 rounded-2xl border border-slate-800 relative overflow-hidden group hover:border-slate-600 transition-colors">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-cyan-500 opacity-50 group-hover:opacity-100 transition-opacity"></div>
+                <h3 class="text-xl font-mono font-semibold text-white mb-6 flex items-center border-b border-slate-700/50 pb-4">
+                    <i class="fas fa-database text-cyan-500 mr-3"></i> Programming & DBs
+                </h3>
+                <div class="flex flex-wrap gap-3">
+                    <div class="bg-primary-dark px-4 py-2 rounded-lg text-slate-300 text-sm font-mono border border-slate-700/50 hover:border-cyan-500 hover:text-cyan-400 transition-all cursor-default shadow-sm"><i class="fab fa-python mr-2"></i>Python</div>
+                    <div class="bg-primary-dark px-4 py-2 rounded-lg text-slate-300 text-sm font-mono border border-slate-700/50 hover:border-cyan-500 hover:text-cyan-400 transition-all cursor-default shadow-sm"><i class="fas fa-database mr-2"></i>SQL</div>
+                    <div class="bg-primary-dark px-4 py-2 rounded-lg text-slate-300 text-sm font-mono border border-slate-700/50 hover:border-cyan-500 hover:text-cyan-400 transition-all cursor-default shadow-sm">MySQL</div>
+                    <div class="bg-primary-dark px-4 py-2 rounded-lg text-slate-300 text-sm font-mono border border-slate-700/50 hover:border-cyan-500 hover:text-cyan-400 transition-all cursor-default shadow-sm">MariaDB</div>
+                </div>
+            </div>
+
+            <!-- Group 2: ML & DL -->
+            <div class="bg-secondary-dark/40 backdrop-blur-md p-8 rounded-2xl border border-slate-800 relative overflow-hidden group hover:border-slate-600 transition-colors">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-orange-500 to-red-500 opacity-50 group-hover:opacity-100 transition-opacity"></div>
+                <h3 class="text-xl font-mono font-semibold text-white mb-6 flex items-center border-b border-slate-700/50 pb-4">
+                    <i class="fas fa-brain text-orange-500 mr-3"></i> ML & Deep Learning
+                </h3>
+                <div class="flex flex-wrap gap-3">
+                    <div class="bg-primary-dark px-4 py-2 rounded-lg text-slate-300 text-sm font-mono border border-slate-700/50 hover:border-orange-500 hover:text-orange-400 transition-all cursor-default shadow-sm">Scikit-Learn</div>
+                    <div class="bg-primary-dark px-4 py-2 rounded-lg text-slate-300 text-sm font-mono border border-slate-700/50 hover:border-orange-500 hover:text-orange-400 transition-all cursor-default shadow-sm">PyTorch</div>
+                    <div class="bg-primary-dark px-4 py-2 rounded-lg text-slate-300 text-sm font-mono border border-slate-700/50 hover:border-orange-500 hover:text-orange-400 transition-all cursor-default shadow-sm">TensorFlow</div>
+                    <div class="bg-primary-dark px-4 py-2 rounded-lg text-slate-300 text-sm font-mono border border-slate-700/50 hover:border-orange-500 hover:text-orange-400 transition-all cursor-default shadow-sm">Keras</div>
+                </div>
+            </div>
+
+            <!-- Group 3: GenAI & Agentic Frameworks -->
+            <div class="bg-secondary-dark/40 backdrop-blur-md p-8 rounded-2xl border border-slate-800 relative overflow-hidden group hover:border-slate-600 transition-colors">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-pink-500 opacity-50 group-hover:opacity-100 transition-opacity"></div>
+                <h3 class="text-xl font-mono font-semibold text-white mb-6 flex items-center border-b border-slate-700/50 pb-4">
+                    <i class="fas fa-robot text-purple-400 mr-3"></i> GenAI & Agentic
+                </h3>
+                <div class="flex flex-wrap gap-3">
+                    <div class="bg-primary-dark px-4 py-2 rounded-lg text-slate-300 text-sm font-mono border border-slate-700/50 hover:border-purple-400 hover:text-purple-300 transition-all cursor-default shadow-sm">Hugging Face</div>
+                    <div class="bg-primary-dark px-4 py-2 rounded-lg text-slate-300 text-sm font-mono border border-slate-700/50 hover:border-purple-400 hover:text-purple-300 transition-all cursor-default shadow-sm">Ollama</div>
+                    <div class="bg-primary-dark px-4 py-2 rounded-lg text-slate-300 text-sm font-mono border border-slate-700/50 hover:border-purple-400 hover:text-purple-300 transition-all cursor-default shadow-sm">LangChain</div>
+                    <div class="bg-primary-dark px-4 py-2 rounded-lg text-slate-300 text-sm font-mono border border-slate-700/50 hover:border-purple-400 hover:text-purple-300 transition-all cursor-default shadow-sm">CrewAI</div>
+                </div>
+            </div>
+
+            <!-- Group 4: MLOps & Deployment -->
+            <div class="bg-secondary-dark/40 backdrop-blur-md p-8 rounded-2xl border border-slate-800 relative overflow-hidden group hover:border-slate-600 transition-colors">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-accent-blue to-blue-600 opacity-50 group-hover:opacity-100 transition-opacity"></div>
+                <h3 class="text-xl font-mono font-semibold text-white mb-6 flex items-center border-b border-slate-700/50 pb-4">
+                    <i class="fas fa-server text-accent-blue mr-3"></i> MLOps & Deployment
+                </h3>
+                <div class="flex flex-wrap gap-3">
+                    <div class="bg-primary-dark px-4 py-2 rounded-lg text-slate-300 text-sm font-mono border border-slate-700/50 hover:border-accent-blue hover:text-accent-blue transition-all cursor-default shadow-sm"><i class="fab fa-docker mr-2"></i>Docker</div>
+                    <div class="bg-primary-dark px-4 py-2 rounded-lg text-slate-300 text-sm font-mono border border-slate-700/50 hover:border-accent-blue hover:text-accent-blue transition-all cursor-default shadow-sm">Kubernetes</div>
+                    <div class="bg-primary-dark px-4 py-2 rounded-lg text-slate-300 text-sm font-mono border border-slate-700/50 hover:border-accent-blue hover:text-accent-blue transition-all cursor-default shadow-sm">FastAPI</div>
+                    <div class="bg-primary-dark px-4 py-2 rounded-lg text-slate-300 text-sm font-mono border border-slate-700/50 hover:border-accent-blue hover:text-accent-blue transition-all cursor-default shadow-sm"><i class="fab fa-git-alt mr-2"></i>Git</div>
+                </div>
+            </div>
+
+            <!-- Group 5: Model Optimization -->
+            <div class="bg-secondary-dark/40 backdrop-blur-md p-8 rounded-2xl border border-slate-800 relative overflow-hidden group hover:border-slate-600 transition-colors">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-accent-green to-emerald-600 opacity-50 group-hover:opacity-100 transition-opacity"></div>
+                <h3 class="text-xl font-mono font-semibold text-white mb-6 flex items-center border-b border-slate-700/50 pb-4">
+                    <i class="fas fa-sliders-h text-accent-green mr-3"></i> Model Optimization
+                </h3>
+                <div class="flex flex-wrap gap-3">
+                    <div class="bg-primary-dark px-4 py-2 rounded-lg text-slate-300 text-sm font-mono border border-slate-700/50 hover:border-accent-green hover:text-accent-green transition-all cursor-default shadow-sm">Optuna</div>
+                    <div class="bg-primary-dark px-4 py-2 rounded-lg text-slate-300 text-sm font-mono border border-slate-700/50 hover:border-accent-green hover:text-accent-green transition-all cursor-default shadow-sm">GridSearchCV</div>
+                    <div class="bg-primary-dark px-4 py-2 rounded-lg text-slate-300 text-sm font-mono border border-slate-700/50 hover:border-accent-green hover:text-accent-green transition-all cursor-default shadow-sm">RandomizedSearchCV</div>
+                </div>
+            </div>
+
+            <!-- Group 6: Data Visualization -->
+            <div class="bg-secondary-dark/40 backdrop-blur-md p-8 rounded-2xl border border-slate-800 relative overflow-hidden group hover:border-slate-600 transition-colors">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-yellow-400 to-orange-500 opacity-50 group-hover:opacity-100 transition-opacity"></div>
+                <h3 class="text-xl font-mono font-semibold text-white mb-6 flex items-center border-b border-slate-700/50 pb-4">
+                    <i class="fas fa-chart-pie text-yellow-500 mr-3"></i> Data Visualization
+                </h3>
+                <div class="flex flex-wrap gap-3">
+                    <div class="bg-primary-dark px-4 py-2 rounded-lg text-slate-300 text-sm font-mono border border-slate-700/50 hover:border-yellow-500 hover:text-yellow-400 transition-all cursor-default shadow-sm">Power BI</div>
+                    <div class="bg-primary-dark px-4 py-2 rounded-lg text-slate-300 text-sm font-mono border border-slate-700/50 hover:border-yellow-500 hover:text-yellow-400 transition-all cursor-default shadow-sm">Matplotlib</div>
+                    <div class="bg-primary-dark px-4 py-2 rounded-lg text-slate-300 text-sm font-mono border border-slate-700/50 hover:border-yellow-500 hover:text-yellow-400 transition-all cursor-default shadow-sm">Seaborn</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Certifications -->
+        <div class="bg-gradient-to-r from-secondary-dark/80 to-primary-dark/80 backdrop-blur-md p-8 rounded-2xl border border-slate-800">
+            <h3 class="text-2xl font-mono font-semibold text-white mb-6 flex items-center">
+                <i class="fas fa-certificate text-yellow-500 mr-4"></i> Professional Certifications
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="flex items-center p-4 bg-bg-color/50 rounded-xl border border-slate-700/50 hover:border-yellow-500/50 transition-colors">
+                    <div class="w-12 h-12 rounded-full bg-blue-900/30 flex items-center justify-center border border-blue-500/30 mr-4 shrink-0">
+                        <i class="fas fa-award text-blue-400 text-xl"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-sans font-medium">IBM Data Science Professional Certificate</h4>
+                        <p class="text-slate-400 text-sm font-mono mt-1">IBM</p>
+                    </div>
+                </div>
+                <div class="flex items-center p-4 bg-bg-color/50 rounded-xl border border-slate-700/50 hover:border-yellow-500/50 transition-colors">
+                    <div class="w-12 h-12 rounded-full bg-orange-900/30 flex items-center justify-center border border-orange-500/30 mr-4 shrink-0">
+                        <i class="fas fa-award text-orange-400 text-xl"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-sans font-medium">PyTorch for Deep Learning Professional Certificate</h4>
+                        <p class="text-slate-400 text-sm font-mono mt-1">DeepLearning.AI</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

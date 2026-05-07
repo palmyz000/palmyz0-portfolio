@@ -1,0 +1,62 @@
+{% extends 'portfolio/base.html' %}
+
+{% block content %}
+<section id="about" class="min-h-[75vh] flex items-center relative overflow-hidden">
+    <!-- Decorative background elements -->
+    <div class="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-accent-blue/10 blur-[100px] pointer-events-none"></div>
+    <div class="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full bg-accent-green/10 blur-[100px] pointer-events-none"></div>
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div class="order-2 lg:order-1">
+                <div class="inline-flex items-center space-x-2 bg-secondary-dark/50 border border-slate-700/50 rounded-full px-4 py-1.5 mb-6 backdrop-blur-sm">
+                    <span class="w-2 h-2 rounded-full bg-accent-green animate-pulse"></span>
+                    <span class="text-xs font-mono text-slate-300">Available for new opportunities</span>
+                </div>
+                
+                <h1 class="text-5xl md:text-6xl font-bold text-white mb-4 leading-tight font-sans tracking-tight">
+                    Suphawit MeeSak
+                </h1>
+                <h3 class="text-2xl md:text-3xl font-semibold mb-6 text-gradient font-mono">
+                    Data Scientist / AI Engineer
+                </h3>
+                <p class="text-text-muted text-lg mb-8 leading-relaxed max-w-xl">
+                    I am an innovative Data Scientist and AI Engineer passionate about data analysis and solving complex problems using Machine Learning, Deep Learning, and AI. I specialize in leveraging predictive analytics and am highly interested in integrating emerging technologies, such as Agentic AI frameworks, into practical data science workflows to automate complex problem-solving and build scalable, data-driven solutions.
+                </p>
+                
+                <div class="flex flex-wrap gap-4 font-mono text-sm mb-10">
+                    <a href="mailto:Suphawit11@icloud.com" class="bg-accent-blue hover:bg-sky-600 text-white px-6 py-3 rounded-lg font-medium transition-all shadow-[0_0_20px_rgba(14,165,233,0.3)] hover:shadow-[0_0_30px_rgba(14,165,233,0.5)] flex items-center">
+                        <i class="fas fa-paper-plane mr-2"></i> me.contact()
+                    </a>
+                    <a href="{% url 'projects' %}" class="bg-secondary-dark/80 backdrop-blur-sm border border-slate-700 hover:border-accent-blue text-white px-6 py-3 rounded-lg font-medium transition-all flex items-center">
+                        <i class="fas fa-folder-open mr-2"></i> me.view_projects()
+                    </a>
+                </div>
+                
+                <div class="flex items-center space-x-6 text-text-muted">
+                    <a href="https://github.com/palmyz000" target="_blank" class="hover:text-white hover:scale-110 transition-all" title="GitHub">
+                        <i class="fab fa-github text-3xl"></i>
+                    </a>
+                    <a href="https://huggingface.co/palmyz0" target="_blank" class="hover:text-white hover:scale-110 transition-all" title="Hugging Face">
+                        <svg class="w-8 h-8 fill-current" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M32,2A30,30,0,1,0,62,32,30,30,0,0,0,32,2ZM18,48.5A13.5,13.5,0,0,1,31.5,35h1A13.5,13.5,0,0,1,46,48.5,1.5,1.5,0,0,1,44.5,50h-25A1.5,1.5,0,0,1,18,48.5ZM43,30a6,6,0,1,1,6-6A6,6,0,0,1,43,30ZM21,30a6,6,0,1,1,6-6A6,6,0,0,1,21,30Z"/>
+                        </svg>
+                    </a>
+                    <a href="mailto:Suphawit11@icloud.com" class="hover:text-white hover:scale-110 transition-all" title="Email">
+                        <i class="fas fa-envelope text-3xl"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="order-1 lg:order-2 flex justify-center lg:justify-end">
+                <div class="w-72 h-72 md:w-96 md:h-96 rounded-full bg-gradient-to-br from-secondary-dark to-primary-dark border border-slate-700/50 flex items-center justify-center relative shadow-2xl p-2 group">
+                    <div class="absolute inset-0 rounded-full border border-accent-blue/30 group-hover:border-accent-blue/60 transition-colors duration-700 animate-[spin_10s_linear_infinite]"></div>
+                    <div class="absolute inset-6 rounded-full border border-accent-green/20 group-hover:border-accent-green/50 transition-colors duration-700 animate-[spin_15s_linear_infinite_reverse]"></div>
+                    <div class="absolute inset-12 rounded-full border border-purple-500/20 group-hover:border-purple-500/50 transition-colors duration-700 animate-[spin_20s_linear_infinite]"></div>
+                    <i class="fas fa-brain text-8xl text-slate-600 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-accent-blue group-hover:to-accent-green transition-all duration-500 drop-shadow-lg"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

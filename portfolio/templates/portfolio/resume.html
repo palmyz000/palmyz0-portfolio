@@ -1,0 +1,36 @@
+{% extends 'portfolio/base.html' %}
+{% load static %}
+
+{% block content %}
+<section id="resume" class="py-12 relative min-h-[70vh]">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div
+            class="mb-12 flex flex-col sm:flex-row sm:justify-between sm:items-end border-b border-slate-800 pb-4 gap-4">
+            <div>
+                <h2 class="text-3xl font-bold text-white mb-2 flex items-center font-mono">
+                    <span class="text-accent-green mr-3">In [3]:</span> cv2.imshow('Resume')
+                </h2>
+                <p class="text-slate-400 font-mono text-sm ml-8"><span class="text-accent-blue">Out[3]:</span>
+                    Displaying Curriculum Vitae</p>
+            </div>
+
+            <a href="{% static 'portfolio/images/Resume.png' %}" download
+                class="bg-primary-dark hover:bg-slate-800 text-accent-blue border border-accent-blue/50 hover:border-accent-blue px-4 py-2 rounded-lg transition-all duration-300 font-mono text-sm flex items-center shadow-[0_0_10px_rgba(14,165,233,0.2)]">
+                <i class="fas fa-download mr-2"></i> download_cv()
+            </a>
+        </div>
+
+        <div
+            class="bg-secondary-dark/40 backdrop-blur-md rounded-2xl border border-slate-800 overflow-hidden shadow-2xl relative group p-4 flex justify-center items-center min-h-[500px]">
+            <!-- Decorative borders -->
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-accent-blue to-accent-green opacity-50">
+            </div>
+
+            <!-- Resume Image -->
+            <div class="relative w-full text-center">
+                <img src="{% static 'portfolio/images/Resume.png' %}" alt="Suphawit MeeSak Resume" class="w-full h-auto rounded shadow-lg">
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

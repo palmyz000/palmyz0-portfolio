@@ -1,0 +1,14 @@
+{
+  "builds": [
+    {
+      "src": "myresume/wsgi.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "myresume/wsgi.py"
+    }
+  ]
+}

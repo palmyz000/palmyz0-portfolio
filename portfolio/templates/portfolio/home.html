@@ -1,0 +1,179 @@
+{% extends 'portfolio/base.html' %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section id="about" class="min-h-[80vh] flex items-center bg-primary-dark relative overflow-hidden">
+    <!-- Decorative background elements -->
+    <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-accent-blue/10 blur-3xl"></div>
+    <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-96 h-96 rounded-full bg-accent-green/10 blur-3xl"></div>
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full py-20">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div class="order-2 md:order-1">
+                <h2 class="text-accent-blue font-medium tracking-wide mb-2 uppercase text-sm">Hello, I'm</h2>
+                <h1 class="text-5xl md:text-6xl font-bold text-white mb-4 leading-tight">
+                    {{ name }}
+                </h1>
+                <h3 class="text-2xl md:text-3xl font-semibold mb-6 text-gradient">
+                    {{ title }}
+                </h3>
+                <p class="text-text-muted text-lg mb-8 leading-relaxed max-w-lg">
+                    {{ about }}
+                </p>
+                
+                <div class="flex flex-wrap gap-4">
+                    <a href="mailto:{{ email }}" class="bg-accent-blue hover:bg-sky-600 text-white px-6 py-3 rounded-lg font-medium transition-all shadow-[0_0_15px_rgba(14,165,233,0.3)] hover:shadow-[0_0_25px_rgba(14,165,233,0.5)]">
+                        <i class="fas fa-paper-plane mr-2"></i> Contact Me
+                    </a>
+                    <a href="#projects" class="bg-secondary-dark border border-slate-700 hover:border-accent-blue text-white px-6 py-3 rounded-lg font-medium transition-all">
+                        View Work
+                    </a>
+                </div>
+                
+                <div class="mt-8 flex items-center space-x-6 text-text-muted">
+                    <a href="https://{{ github }}" target="_blank" class="hover:text-white transition-colors"><i class="fab fa-github text-2xl"></i></a>
+                    <a href="https://{{ linkedin }}" target="_blank" class="hover:text-white transition-colors"><i class="fab fa-linkedin text-2xl"></i></a>
+                    <a href="mailto:{{ email }}" class="hover:text-white transition-colors"><i class="fas fa-envelope text-2xl"></i></a>
+                </div>
+            </div>
+            
+            <div class="order-1 md:order-2 flex justify-center md:justify-end">
+                <!-- Abstract Image / Pattern Placeholder -->
+                <div class="w-64 h-64 md:w-80 md:h-80 rounded-full bg-gradient-to-br from-secondary-dark to-primary-dark border border-slate-700 flex items-center justify-center relative shadow-2xl p-2">
+                    <div class="absolute inset-0 rounded-full border border-accent-blue/30 animate-[spin_10s_linear_infinite]"></div>
+                    <div class="absolute inset-4 rounded-full border border-accent-green/20 animate-[spin_15s_linear_infinite_reverse]"></div>
+                    <i class="fas fa-network-wired text-6xl text-slate-600"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Experience & Education Section -->
+<section id="experience" class="py-20 bg-secondary-dark/30">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-white mb-12 flex items-center">
+            <span class="text-accent-blue mr-3"><i class="fas fa-briefcase"></i></span> Experience & Education
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <!-- Work Experience Timeline -->
+            <div>
+                <h3 class="text-xl font-semibold text-white mb-6 border-b border-slate-700 pb-2">Work Experience</h3>
+                <div class="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-700 before:to-transparent">
+                    
+                    {% for exp in experiences %}
+                    <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                        <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-slate-800 group-[.is-active]:bg-accent-blue group-[.is-active]:border-accent-blue group-[.is-active]:text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                            <i class="fas fa-laptop-code text-sm"></i>
+                        </div>
+                        <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-primary-dark p-6 rounded-xl border border-slate-800 shadow-lg hover:border-accent-blue/50 transition-colors">
+                            <div class="flex items-center justify-between mb-1">
+                                <h4 class="font-bold text-white text-lg">{{ exp.role }}</h4>
+                            </div>
+                            <div class="text-accent-blue text-sm font-medium mb-3">{{ exp.company }} &bull; {{ exp.period }}</div>
+                            <p class="text-text-muted text-sm">{{ exp.description }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+
+            <!-- Education Timeline -->
+            <div>
+                <h3 class="text-xl font-semibold text-white mb-6 border-b border-slate-700 pb-2">Education</h3>
+                <div class="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-700 before:to-transparent">
+                    
+                    {% for edu in educations %}
+                    <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                        <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-slate-800 group-[.is-active]:bg-accent-green group-[.is-active]:border-accent-green group-[.is-active]:text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                            <i class="fas fa-graduation-cap text-sm"></i>
+                        </div>
+                        <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-primary-dark p-6 rounded-xl border border-slate-800 shadow-lg hover:border-accent-green/50 transition-colors">
+                            <h4 class="font-bold text-white text-lg">{{ edu.degree }}</h4>
+                            <div class="text-accent-green text-sm font-medium mt-1 mb-2">{{ edu.university }}</div>
+                            <div class="text-text-muted text-sm flex items-center"><i class="far fa-calendar-alt mr-2"></i>{{ edu.period }}</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Projects Section -->
+<section id="projects" class="py-20 bg-primary-dark">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-white mb-4">Featured Projects</h2>
+            <p class="text-text-muted max-w-2xl mx-auto">ผลงานที่ผ่านมาในการประยุกต์ใช้ Data Science และ Machine Learning ในการแก้ปัญหาจริง</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for project in projects %}
+            <!-- Project Card -->
+            <div class="bg-secondary-dark rounded-2xl overflow-hidden border border-slate-800 hover:border-accent-blue/50 transition-all hover:-translate-y-2 hover:shadow-[0_10px_30px_rgba(14,165,233,0.15)] group flex flex-col">
+                <div class="relative h-48 overflow-hidden bg-slate-800">
+                    <img src="{{ project.image }}" alt="{{ project.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80 group-hover:opacity-100">
+                    <div class="absolute inset-0 bg-gradient-to-t from-secondary-dark to-transparent opacity-80"></div>
+                </div>
+                <div class="p-6 flex-grow flex flex-col">
+                    <h3 class="text-xl font-bold text-white mb-2">{{ project.title }}</h3>
+                    <p class="text-text-muted text-sm mb-6 flex-grow">{{ project.description }}</p>
+                    
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        {% for tag in project.tags %}
+                        <span class="px-3 py-1 bg-primary-dark text-accent-blue text-xs rounded-full border border-slate-700">{{ tag }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Skills Section -->
+<section id="skills" class="py-20 bg-secondary-dark/30">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-white mb-4">Technical Skills</h2>
+            <p class="text-text-muted">เครื่องมือและเทคโนโลยีที่ใช้ในการทำงาน</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {% for skill_group in skills %}
+            <!-- Skill Category Card -->
+            <div class="bg-primary-dark p-8 rounded-2xl border border-slate-800 relative overflow-hidden group">
+                <div class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-accent-blue to-accent-green opacity-50 group-hover:opacity-100 transition-opacity"></div>
+                
+                <h3 class="text-xl font-semibold text-white mb-6 flex items-center">
+                    {% if forloop.counter == 1 %}
+                        <i class="fas fa-brain text-accent-blue mr-3"></i>
+                    {% elif forloop.counter == 2 %}
+                        <i class="fas fa-server text-accent-green mr-3"></i>
+                    {% else %}
+                        <i class="fas fa-code text-accent-blue mr-3"></i>
+                    {% endif %}
+                    {{ skill_group.category }}
+                </h3>
+                
+                <div class="flex flex-wrap gap-3">
+                    {% for item in skill_group.items %}
+                    <div class="bg-secondary-dark px-4 py-2 rounded-lg text-text-light text-sm font-medium border border-slate-700 hover:border-slate-500 transition-colors flex items-center">
+                        <span class="w-1.5 h-1.5 rounded-full bg-accent-blue mr-2"></span>
+                        {{ item }}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}
