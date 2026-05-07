@@ -34,6 +34,7 @@ Built with **Django** and **Tailwind CSS**, and deployed via **Vercel**, this pr
 ## 👤 Author
 
 **Suphawit MeeSak**
+
 *Junior Data Scientist / Junior AI Engineer*
 
 * 📧 **Email:** Suphawit11@icloud.com
