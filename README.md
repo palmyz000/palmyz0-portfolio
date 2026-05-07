@@ -1,67 +1,33 @@
-# 🚀 Personal AI Portfolio Web App
+# 🚀 My AI & Data Science Portfolio
 
-![Python](https://img.shields.io/badge/Python-3.12%2B-blue?style=for-the-badge&logo=python&logoColor=white)
-![Django](https://img.shields.io/badge/Django-%23092E20.svg?style=for-the-badge&logo=django&logoColor=white)
-![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![Vercel](https://img.shields.io/badge/Vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white)
-
-## 📖 About This Repository
-
-Welcome to my **Personal Portfolio Web App**! 🌟
-
-This repository contains the source code for my professional portfolio website. It is designed to showcase my background, work experience, and projects in the fields of Data Science, Machine Learning, and AI Engineering. 
-
-The web application is built using the **Django** framework for robust backend structure, styled with **Tailwind CSS** for a clean, modern UI, and seamlessly deployed using **Vercel** via a Serverless architecture.
+<p align="center">
+  <a href="https://palmyz0-portfolio.vercel.app/">
+    <img src="https://img.shields.io/badge/LIVE_DEMO-View_Portfolio-success?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Demo">
+  </a>
+</p>
 
 ---
 
-## 📚 My Learning Journeys
+## 📸 Web App Preview
 
-Aside from the projects showcased on the website, I actively document my continuous learning and experiments. Explore my journey repositories below:
-
-* 🤖 **[Machine Learning Journey](https://github.com/palmyz000/Machine-Learning-Journey):** My laboratory for classical machine learning algorithms, EDA, and model optimization.
-* 🧠 **[Deep Learning Journey](https://github.com/palmyz000/Deep-Learning-Journey):** A focused collection of experiments involving Computer Vision (CV), Natural Language Processing (NLP), and Neural Network architectures.
+![Portfolio Website Preview](example.jpg)
 
 ---
 
-## 🛠️ Tech Stack & Tools
+## 🌟 Overview
 
-* **Backend:** Python, Django
-* **Frontend:** HTML5, Django Templates, Tailwind CSS
-* **Deployment:** Vercel (Serverless Deployment), WhiteNoise (Static file serving)
-* **Version Control:** Git, GitHub
+This repository is dedicated to hosting my personal portfolio web application. It serves as a centralized hub to showcase my expertise in **Data Science, Machine Learning, and AI Engineering**.
+
+Built with **Django** and **Tailwind CSS**, and deployed via **Vercel**, this project demonstrates my ability to bridge the gap between complex AI models and user-friendly web interfaces.
 
 ---
 
-## 🚀 How to Run Locally
+## 🛠️ Built With
 
-If you want to run this portfolio on your local machine, follow these steps:
-
-1. Clone this repository:
-   ```bash
-   git clone [https://github.com/palmyz000/palmyz0-portfolio.git](https://github.com/palmyz000/palmyz0-portfolio.git)
-   ```
-2. Navigate to the project folder:
-   ```bash
-   cd palmyz0-portfolio
-   ```
-3. Create and activate a virtual environment:
-   ```bash
-   python -m venv venv
-   # On Windows
-   venv\Scripts\activate
-   # On macOS/Linux
-   source venv/bin/activate
-   ```
-4. Install the required dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-5. Run the Django development server:
-   ```bash
-   python manage.py runserver
-   ```
-6. Open your browser and visit http://127.0.0.1:8000/.
+* **Language:** Python 3.12+
+* **Framework:** Django
+* **Styling:** Tailwind CSS
+* **Deployment:** Vercel (Serverless Architecture)
 
 ---
 
@@ -70,8 +36,8 @@ If you want to run this portfolio on your local machine, follow these steps:
 **Suphawit MeeSak**
 *Junior Data Scientist / Junior AI Engineer*
 
-* 📧 **Email:** Suphawit11@icloud.com
+* 🌐 **Live Portfolio:** [suphawit-portfolio.vercel.app](https://palmyz0-portfolio.vercel.app/)
+* 💻 **GitHub Profile:** [palmyz000](https://github.com/palmyz000)
 * 🔗 **LinkedIn:** [Suphawit MeeSak](https://www.linkedin.com/in/suphawit-meesak/)
-* 💻 **GitHub:** [palmyz000](https://github.com/palmyz000)
+* 📧 **Email:** Suphawit11@icloud.com
 * 🤗 **Hugging Face:** [palmyz0](https://huggingface.co/palmyz0)
-* 🌐 **Portfolio:** [suphawit-portfolio.vercel.app](https://palmyz0-portfolio.vercel.app/)
