@@ -60,12 +60,23 @@ DATA = {
             'items': ['Pandas', 'NumPy', 'Scikit-learn', 'TensorFlow', 'PyTorch']
         },
         {
-            'category': 'ML Engineering & DevOps',
-            'items': ['Docker', 'FastAPI', 'MLflow', 'AWS', 'Git']
+            'category': 'Cloud & Backend Architecture',
+            'items': ['Google Cloud Platform', 'BigQuery', 'Looker', 'Cloud Run', 'FastAPI', 'AWS']
         },
         {
-            'category': 'Languages & Databases',
-            'items': ['Python', 'SQL', 'R', 'PostgreSQL', 'MongoDB']
+            'category': 'ML Engineering & Tools',
+            'items': ['Docker', 'MLflow', 'Git', 'Python', 'SQL', 'PostgreSQL']
+        }
+    ],
+    'certifications': [
+        'IBM Data Science Professional Certificate',
+        'DeepLearning.AI PyTorch for Deep Learning Professional Certificate'
+    ],
+    'awards': [
+        {
+            'title': 'Silver Medal',
+            'event': 'Thailand New Gen Inventors Award 2025',
+            'description': 'PHQ-9 Speech to text: Speech and Text Data Analysis for Depression'
         }
     ]
 }
@@ -74,7 +85,12 @@ def about(request):
     return render(request, 'portfolio/about.html', DATA)
 
 def experience(request):
-    return render(request, 'portfolio/experience.html', {'experiences': DATA['experiences'], 'educations': DATA['educations']})
+    return render(request, 'portfolio/experience.html', {
+        'experiences': DATA['experiences'], 
+        'educations': DATA['educations'],
+        'certifications': DATA['certifications'],
+        'awards': DATA['awards']
+    })
 
 def projects(request):
     return render(request, 'portfolio/projects.html', {'projects': DATA['projects']})
@@ -84,3 +100,9 @@ def skills(request):
 
 def resume(request):
     return render(request, 'portfolio/resume.html', DATA)
+
+def tools_list(request):
+    return render(request, 'portfolio/tools.html')
+
+def interval_timer(request):
+    return render(request, 'portfolio/interval_timer.html')

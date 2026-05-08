@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
@@ -102,8 +103,11 @@
                     </a>
                 </div>
                 <!-- Desktop Menu -->
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-8 font-mono text-sm">
+                <div class="hidden md:flex items-center">
+                    <button id="desktop-mute-btn" class="text-text-muted hover:text-accent-blue transition-colors mr-6" title="Toggle Robot Sound">
+                        <i class="fas fa-volume-up text-lg"></i>
+                    </button>
+                    <div class="flex items-baseline space-x-8 font-mono text-sm">
                         <a href="{% url 'about' %}" class="{% if request.resolver_match.url_name == 'about' %}text-accent-blue{% else %}text-text-muted hover:text-white{% endif %} transition-all duration-300 group flex items-center">
                             <span class="text-accent-blue max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out mr-0 group-hover:mr-1">def</span>
                             <span>about</span>
@@ -124,19 +128,37 @@
                             <span>skills</span>
                             <span class="text-slate-500 max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out ml-0 group-hover:ml-1">():</span>
                         </a>
-                        <a href="{% url 'resume' %}" class="{% if request.resolver_match.url_name == 'resume' %}text-accent-green{% else %}text-text-muted hover:text-accent-green{% endif %} transition-all duration-300 group flex items-center">
+                        <a href="{% url 'tools' %}" class="{% if request.resolver_match.url_name == 'tools' %}text-accent-blue{% else %}text-text-muted hover:text-white{% endif %} transition-all duration-300 group flex items-center">
                             <span class="text-accent-blue max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out mr-0 group-hover:mr-1">def</span>
-                            <span>resume</span>
+                            <span>tools</span>
                             <span class="text-slate-500 max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out ml-0 group-hover:ml-1">():</span>
+                        </a>
+                        <a href="{% url 'resume' %}" class="ml-4 px-4 py-2 rounded border border-accent-green text-accent-green hover:bg-accent-green hover:text-bg-color transition-all duration-300 flex items-center gap-2 font-semibold shadow-[0_0_10px_rgba(16,185,129,0.2)] hover:shadow-[0_0_20px_rgba(16,185,129,0.5)] group">
+                            <i class="fas fa-file-alt group-hover:animate-bounce"></i>
+                            <span>Resume</span>
                         </a>
                     </div>
                 </div>
                 <!-- Mobile Menu Button -->
-                <div class="md:hidden flex items-center">
-                    <button class="text-text-muted hover:text-white">
+                <div class="md:hidden flex items-center gap-4">
+                    <button id="mobile-mute-btn" class="text-text-muted hover:text-accent-blue transition-colors">
+                        <i class="fas fa-volume-up text-lg"></i>
+                    </button>
+                    <button id="mobile-menu-btn" class="text-text-muted hover:text-white">
                         <i class="fas fa-bars text-2xl"></i>
                     </button>
                 </div>
+            </div>
+        </div>
+        <!-- Mobile Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-primary-dark/95 border-b border-slate-800">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 font-mono">
+                <a href="{% url 'about' %}" class="block px-3 py-2 rounded-md text-base font-medium text-text-light hover:bg-slate-800">about</a>
+                <a href="{% url 'experience' %}" class="block px-3 py-2 rounded-md text-base font-medium text-text-light hover:bg-slate-800">experience</a>
+                <a href="{% url 'projects' %}" class="block px-3 py-2 rounded-md text-base font-medium text-text-light hover:bg-slate-800">projects</a>
+                <a href="{% url 'skills' %}" class="block px-3 py-2 rounded-md text-base font-medium text-text-light hover:bg-slate-800">skills</a>
+                <a href="{% url 'tools' %}" class="block px-3 py-2 rounded-md text-base font-medium text-text-light hover:bg-slate-800">tools</a>
+                <a href="{% url 'resume' %}" class="block px-3 py-2 mt-2 text-center rounded-md text-base font-bold bg-accent-green text-bg-color">Resume</a>
             </div>
         </div>
     </nav>
@@ -219,6 +241,18 @@
             } else {
                 // ถ้าเคยโหลดแล้ว ให้ซ่อนทันที
                 document.getElementById('loader').style.display = 'none';
+            }
+        });
+    </script>
+    <script src="{% static 'js/robot_pet.js' %}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.getElementById('mobile-menu-btn');
+            const menu = document.getElementById('mobile-menu');
+            if(btn && menu) {
+                btn.addEventListener('click', () => {
+                    menu.classList.toggle('hidden');
+                });
             }
         });
     </script>

@@ -1,0 +1,281 @@
+{% extends 'portfolio/base.html' %}
+
+{% block title %}Interval Timer | Suphawit MeeSak{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Breadcrumb & Header -->
+    <div class="mb-8 flex items-center justify-between">
+        <a href="{% url 'tools' %}" class="text-text-muted hover:text-white transition-colors flex items-center gap-2 font-mono text-sm">
+            <i class="fas fa-arrow-left"></i> cd ..
+        </a>
+    </div>
+
+    <div class="mb-10 text-center">
+        <h1 class="text-3xl md:text-4xl font-bold mb-2 font-mono text-white">
+            Interval Timer
+        </h1>
+        <p class="text-text-muted text-sm">Workout & Productivity Time Manager</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Main Timer Area -->
+        <div class="lg:col-span-2">
+            <div id="timer-container" class="flex flex-col items-center justify-center p-12 rounded-3xl border-2 border-accent-blue/30 bg-accent-blue/5 shadow-[0_0_50px_rgba(14,165,233,0.1)] transition-colors duration-500 min-h-[400px]">
+                
+                <div id="status-display" class="text-3xl font-bold font-mono text-accent-blue tracking-widest mb-4">
+                    READY
+                </div>
+                
+                <div id="time-display" class="text-6xl sm:text-7xl md:text-9xl font-bold font-mono text-white tracking-tighter my-4 drop-shadow-lg">
+                    00:00
+                </div>
+                
+                <div id="round-display" class="text-xl font-mono text-slate-400 mt-4 bg-slate-800/50 px-6 py-2 rounded-full border border-slate-700">
+                    Round 1 / 5
+                </div>
+
+            </div>
+
+            <!-- Controls -->
+            <div class="flex justify-center gap-6 mt-8">
+                <button id="start-btn" onclick="startTimer()" class="w-20 h-20 rounded-full bg-accent-blue text-white flex items-center justify-center text-3xl hover:bg-sky-400 hover:scale-105 transition-all shadow-[0_0_20px_rgba(14,165,233,0.4)]">
+                    <i class="fas fa-play ml-2"></i>
+                </button>
+                <button id="pause-btn" onclick="pauseTimer()" class="hidden w-20 h-20 rounded-full bg-yellow-500 text-white flex items-center justify-center text-3xl hover:bg-yellow-400 hover:scale-105 transition-all shadow-[0_0_20px_rgba(234,179,8,0.4)]">
+                    <i class="fas fa-pause"></i>
+                </button>
+                <button id="reset-btn" onclick="resetTimer()" class="w-20 h-20 rounded-full bg-slate-800 text-slate-300 border border-slate-700 flex items-center justify-center text-2xl hover:bg-slate-700 hover:text-white transition-all">
+                    <i class="fas fa-redo"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Settings Area -->
+        <div class="bg-secondary-dark/50 border border-slate-700/50 rounded-2xl p-6 h-fit">
+            <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-700/50">
+                <i class="fas fa-cog text-accent-green"></i>
+                <h3 class="text-lg font-bold text-white font-mono">Settings</h3>
+            </div>
+            
+            <div class="space-y-6">
+                <!-- Work Time -->
+                <div>
+                    <label class="block text-sm font-medium text-slate-400 mb-2 flex justify-between">
+                        <span>Work Time (sec)</span>
+                        <i class="fas fa-fire text-accent-blue text-xs mt-1"></i>
+                    </label>
+                    <input type="number" id="work-input" value="40" min="1" class="w-full bg-primary-dark border border-slate-700 rounded-lg px-4 py-3 text-white font-mono focus:outline-none focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition-colors">
+                </div>
+
+                <!-- Rest Time -->
+                <div>
+                    <label class="block text-sm font-medium text-slate-400 mb-2 flex justify-between">
+                        <span>Rest Time (sec)</span>
+                        <i class="fas fa-coffee text-accent-green text-xs mt-1"></i>
+                    </label>
+                    <input type="number" id="rest-input" value="20" min="1" class="w-full bg-primary-dark border border-slate-700 rounded-lg px-4 py-3 text-white font-mono focus:outline-none focus:border-accent-green focus:ring-1 focus:ring-accent-green transition-colors">
+                </div>
+
+                <!-- Rounds -->
+                <div>
+                    <label class="block text-sm font-medium text-slate-400 mb-2 flex justify-between">
+                        <span>Rounds</span>
+                        <i class="fas fa-redo text-slate-500 text-xs mt-1"></i>
+                    </label>
+                    <input type="number" id="rounds-input" value="5" min="1" class="w-full bg-primary-dark border border-slate-700 rounded-lg px-4 py-3 text-white font-mono focus:outline-none focus:border-slate-500 focus:ring-1 focus:ring-slate-500 transition-colors">
+                </div>
+                
+                <div class="pt-4 text-xs text-slate-500 text-center flex flex-col gap-2">
+                    <p><i class="fas fa-volume-up"></i> Sound alerts included</p>
+                    <p>Settings apply on next reset.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Timer Logic
+    let workTime = 40;
+    let restTime = 20;
+    let totalRounds = 5;
+
+    let currentRound = 1;
+    let isWorkPhase = true;
+    let timeLeft = workTime;
+    let timerId = null;
+    let isRunning = false;
+
+    // Audio Context Setup (Lazy Init for browser autoplay policies)
+    let audioCtx;
+
+    function initAudio() {
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+    }
+
+    function playBeep(frequency, duration, type = 'sine') {
+        if (!audioCtx) return;
+        
+        const oscillator = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        
+        oscillator.type = type;
+        oscillator.frequency.value = frequency;
+        
+        gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime); // Volume
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        
+        oscillator.start();
+        oscillator.stop(audioCtx.currentTime + duration);
+    }
+
+    function updateDisplay() {
+        const mins = Math.floor(timeLeft / 60);
+        const secs = timeLeft % 60;
+        document.getElementById('time-display').textContent = 
+            `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        document.getElementById('round-display').textContent = `Round ${currentRound} / ${totalRounds}`;
+        
+        const statusEl = document.getElementById('status-display');
+        const displayEl = document.getElementById('timer-container');
+        
+        if (isRunning || (!isRunning && timeLeft !== workTime && currentRound <= totalRounds)) {
+            if (isWorkPhase) {
+                statusEl.textContent = 'WORK';
+                statusEl.className = 'text-3xl font-bold font-mono text-accent-blue tracking-widest ' + (isRunning ? 'animate-pulse' : '');
+                displayEl.className = 'flex flex-col items-center justify-center p-12 rounded-3xl border-2 border-accent-blue/30 bg-accent-blue/5 shadow-[0_0_50px_rgba(14,165,233,0.1)] transition-colors duration-500 min-h-[400px]';
+            } else {
+                statusEl.textContent = 'REST';
+                statusEl.className = 'text-3xl font-bold font-mono text-accent-green tracking-widest ' + (isRunning ? 'animate-pulse' : '');
+                displayEl.className = 'flex flex-col items-center justify-center p-12 rounded-3xl border-2 border-accent-green/30 bg-accent-green/5 shadow-[0_0_50px_rgba(16,185,129,0.1)] transition-colors duration-500 min-h-[400px]';
+            }
+        }
+    }
+
+    function tick() {
+        timeLeft--;
+        
+        // Warning beeps at 3, 2, 1 seconds left
+        if (timeLeft > 0 && timeLeft <= 3) {
+            playBeep(440, 0.2); // Short beep
+        }
+        
+        if (timeLeft < 0) {
+            if (isWorkPhase) {
+                // Switch to Rest
+                isWorkPhase = false;
+                timeLeft = restTime;
+                playBeep(880, 0.6); // Long high beep
+            } else {
+                // Switch to Work or Finish
+                currentRound++;
+                if (currentRound > totalRounds) {
+                    finishTimer();
+                    return;
+                }
+                isWorkPhase = true;
+                timeLeft = workTime;
+                playBeep(880, 0.6); // Long high beep
+            }
+        }
+        updateDisplay();
+    }
+
+    function finishTimer() {
+        clearInterval(timerId);
+        isRunning = false;
+        
+        const statusEl = document.getElementById('status-display');
+        const displayEl = document.getElementById('timer-container');
+        
+        statusEl.textContent = 'FINISHED!';
+        statusEl.className = 'text-3xl font-bold font-mono text-yellow-500 tracking-widest animate-bounce';
+        displayEl.className = 'flex flex-col items-center justify-center p-12 rounded-3xl border-2 border-yellow-500/30 bg-yellow-500/5 shadow-[0_0_50px_rgba(234,179,8,0.2)] transition-colors duration-500 min-h-[400px]';
+        document.getElementById('time-display').textContent = '00:00';
+        
+        // Victory sound
+        playBeep(523.25, 0.2, 'square'); // C5
+        setTimeout(() => playBeep(659.25, 0.2, 'square'), 200); // E5
+        setTimeout(() => playBeep(783.99, 0.4, 'square'), 400); // G5
+        
+        updateButtons();
+    }
+
+    function startTimer() {
+        initAudio();
+        
+        if (!isRunning) {
+            if (timeLeft <= 0 || currentRound > totalRounds) {
+                resetTimer(); // Auto reset if starting from finished state
+            }
+            timerId = setInterval(tick, 1000);
+            isRunning = true;
+            updateDisplay(); // Remove pulse if it was paused
+        }
+        updateButtons();
+    }
+
+    function pauseTimer() {
+        clearInterval(timerId);
+        isRunning = false;
+        updateDisplay(); // Stop pulse
+        updateButtons();
+    }
+
+    function resetTimer() {
+        clearInterval(timerId);
+        isRunning = false;
+        
+        workTime = parseInt(document.getElementById('work-input').value) || 40;
+        restTime = parseInt(document.getElementById('rest-input').value) || 20;
+        totalRounds = parseInt(document.getElementById('rounds-input').value) || 5;
+        
+        currentRound = 1;
+        isWorkPhase = true;
+        timeLeft = workTime;
+        
+        const statusEl = document.getElementById('status-display');
+        statusEl.textContent = 'READY';
+        statusEl.className = 'text-3xl font-bold font-mono text-slate-400 tracking-widest';
+        document.getElementById('timer-container').className = 'flex flex-col items-center justify-center p-12 rounded-3xl border border-slate-700/50 bg-secondary-dark/30 transition-colors duration-500 min-h-[400px]';
+        
+        updateDisplay();
+        updateButtons();
+    }
+
+    function updateButtons() {
+        const startBtn = document.getElementById('start-btn');
+        const pauseBtn = document.getElementById('pause-btn');
+        if (isRunning) {
+            startBtn.classList.add('hidden');
+            pauseBtn.classList.remove('hidden');
+        } else {
+            startBtn.classList.remove('hidden');
+            pauseBtn.classList.add('hidden');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Auto-update timer when settings change while paused/ready
+        const inputs = ['work-input', 'rest-input', 'rounds-input'];
+        inputs.forEach(id => {
+            document.getElementById(id).addEventListener('change', () => {
+                if (!isRunning && currentRound === 1 && isWorkPhase) {
+                   resetTimer();
+                }
+            });
+        });
+        
+        resetTimer(); // Initialize display
+    });
+</script>
+{% endblock %}

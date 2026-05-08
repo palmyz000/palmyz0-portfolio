@@ -6,5 +6,7 @@ urlpatterns = [
     path('experience/', views.experience, name='experience'),
     path('projects/', views.projects, name='projects'),
     path('skills/', views.skills, name='skills'),
+    path('tools/', views.tools_list, name='tools'),
+    path('tools/interval-timer/', views.interval_timer, name='interval_timer'),
     path('resume/', views.resume, name='resume'),
 ]
