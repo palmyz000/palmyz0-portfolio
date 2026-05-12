@@ -245,6 +245,7 @@
                             setTimeout(() => {
                                 loader.style.display = 'none';
                                 sessionStorage.setItem('hasLoadedPortfolio', 'true');
+                                if (window.showRobot) window.showRobot();
                             }, 400);
                         }, 200);
                     }
@@ -254,6 +255,7 @@
             } else {
                 // ถ้าเคยโหลดแล้ว ให้ซ่อนทันที
                 document.getElementById('loader').style.display = 'none';
+                if (window.showRobot) window.showRobot();
             }
         });
     </script>

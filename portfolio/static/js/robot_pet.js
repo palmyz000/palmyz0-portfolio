@@ -1,4 +1,16 @@
 (function() {
+    let isReady = false;
+    let pendingShow = false;
+    let showRobotInstance;
+
+    window.showRobot = function() {
+        if (isReady && showRobotInstance) {
+            showRobotInstance();
+        } else {
+            pendingShow = true;
+        }
+    };
+
     window.addEventListener('DOMContentLoaded', () => {
         // SVG Markup for Wall-E style robot
         const robotSVG = `
@@ -76,7 +88,10 @@
             zIndex: '9999',
             top: '0', left: '0',
             width: '60px', height: '70px',
-            pointerEvents: 'none' // wrapper doesn't catch clicks
+            pointerEvents: 'none', // wrapper doesn't catch clicks
+            display: 'none', // Hidden by default
+            opacity: '0',
+            transition: 'opacity 0.8s ease-in-out'
         });
 
         const container = document.createElement('div');
@@ -115,6 +130,20 @@
         
         document.body.appendChild(wrapper);
         document.body.appendChild(bubble);
+
+        // Expose function to show robot
+        showRobotInstance = function() {
+            if (wrapper.style.display === 'none') {
+                wrapper.style.display = 'block';
+                // Small delay to trigger transition
+                setTimeout(() => {
+                    wrapper.style.opacity = '1';
+                }, 50);
+            }
+        };
+
+        isReady = true;
+        if (pendingShow) showRobotInstance();
 
         // Audio System (Vacuum noise)
         let isMuted = false;
