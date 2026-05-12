@@ -9,4 +9,5 @@ urlpatterns = [
     path('tools/', views.tools_list, name='tools'),
     path('tools/interval-timer/', views.interval_timer, name='interval_timer'),
     path('resume/', views.resume, name='resume'),
+    path('contact/', views.contact_view, name='contact'),
 ]

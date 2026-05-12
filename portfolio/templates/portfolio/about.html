@@ -207,40 +207,55 @@
     </div>
 </section>
 
+{% endblock %}
+
+{% block extra_body %}
 <!-- Contact Modal -->
 <div id="contact-modal" class="fixed inset-0 z-[110] flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300">
-    <div class="absolute inset-0 bg-primary-dark/80 backdrop-blur-sm" id="modal-overlay"></div>
-    <div class="bg-white rounded-3xl w-full max-w-lg mx-4 overflow-hidden shadow-2xl relative z-20 transform scale-95 transition-transform duration-300" id="modal-content">
-        <div class="p-8">
-            <button id="close-modal-btn" class="flex items-center text-slate-500 hover:text-slate-900 mb-8 font-medium transition-colors">
-                <div class="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center mr-3">
-                    <i class="fas fa-arrow-left"></i>
-                </div>
-                Return
-            </button>
+    <div class="absolute inset-0 bg-bg-color/90 backdrop-blur-md" id="modal-overlay"></div>
+    <div class="bg-secondary-dark border border-slate-700/50 rounded-3xl w-full max-w-lg mx-4 overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative z-20 transform scale-95 transition-transform duration-300" id="modal-content">
+        <!-- Close Button (X) -->
+        <button id="close-modal-btn" class="absolute top-6 right-6 w-10 h-10 rounded-full bg-primary-dark/50 border border-slate-700/50 flex items-center justify-center text-slate-400 hover:text-white hover:border-accent-blue transition-all z-30">
+            <i class="fas fa-times text-xl"></i>
+        </button>
 
-            <div class="mb-8">
-                <span class="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-2">Contact</span>
-                <h2 class="text-2xl font-bold text-slate-900 mb-1">contact@palmyz.com</h2>
-                <p class="text-slate-500">+66 9X XXX XXXX</p>
+        <div class="p-8 md:p-10">
+            <div class="mb-10">
+                <div class="inline-flex items-center space-x-2 bg-accent-blue/10 border border-accent-blue/20 rounded-full px-3 py-1 mb-4">
+                    <span class="w-2 h-2 rounded-full bg-accent-blue animate-pulse"></span>
+                    <span class="text-[10px] font-mono font-bold text-accent-blue uppercase tracking-widest">Connect with me</span>
+                </div>
+                <h2 class="text-3xl font-bold text-white mb-2 font-mono">Suphawit11@icloud.com</h2>
+                <p class="text-accent-green font-mono text-lg">062-694-2554</p>
             </div>
 
-            <form class="space-y-4">
-                <div>
-                    <input type="email" placeholder="Your email" class="w-full px-6 py-4 rounded-xl border-2 border-slate-100 focus:border-accent-blue focus:outline-none transition-colors text-slate-900">
+            <form id="contact-form" class="space-y-5">
+                {% csrf_token %}
+                <div class="group">
+                    <label class="block text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-1.5 ml-1">Email Address</label>
+                    <input type="email" id="contact-email" required placeholder="your@email.com" class="w-full bg-primary-dark/50 border border-slate-700/50 rounded-xl px-5 py-4 text-white placeholder:text-slate-600 focus:outline-none focus:border-accent-blue focus:ring-1 focus:ring-accent-blue/20 transition-all font-mono text-sm">
                 </div>
-                <div>
-                    <input type="text" placeholder="Your full name" class="w-full px-6 py-4 rounded-xl border-2 border-slate-100 focus:border-accent-blue focus:outline-none transition-colors text-slate-900">
+                <div class="group">
+                    <label class="block text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-1.5 ml-1">Full Name</label>
+                    <input type="text" id="contact-name" required placeholder="John Doe" class="w-full bg-primary-dark/50 border border-slate-700/50 rounded-xl px-5 py-4 text-white placeholder:text-slate-600 focus:outline-none focus:border-accent-blue focus:ring-1 focus:ring-accent-blue/20 transition-all font-mono text-sm">
                 </div>
-                <div>
-                    <textarea rows="4" placeholder="How can I help you?" class="w-full px-6 py-4 rounded-xl border-2 border-slate-100 focus:border-accent-blue focus:outline-none transition-colors text-slate-900 resize-none"></textarea>
+                <div class="group">
+                    <label class="block text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-1.5 ml-1">Message</label>
+                    <textarea id="contact-message" required rows="4" placeholder="How can I help you?" class="w-full bg-primary-dark/50 border border-slate-700/50 rounded-xl px-5 py-4 text-white placeholder:text-slate-600 focus:outline-none focus:border-accent-blue focus:ring-1 focus:ring-accent-blue/20 transition-all font-mono text-sm resize-none"></textarea>
                 </div>
-                <button type="submit" class="w-full py-4 bg-[#000080] hover:bg-blue-900 text-white rounded-xl font-bold transition-all shadow-lg">
-                    Send
+                <button type="submit" id="submit-btn" class="w-full py-4 bg-accent-blue hover:bg-sky-600 text-white rounded-xl font-bold font-mono transition-all shadow-[0_0_20px_rgba(14,165,233,0.3)] hover:shadow-[0_0_30px_rgba(14,165,233,0.5)] flex items-center justify-center gap-2 mt-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <span id="btn-text">me.send_message()</span>
+                    <i id="btn-icon" class="fas fa-paper-plane text-xs"></i>
                 </button>
             </form>
         </div>
     </div>
+</div>
+
+<!-- Alert Toast -->
+<div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 z-[120] px-6 py-3 rounded-xl bg-slate-900 border border-slate-700 shadow-2xl flex items-center gap-3 opacity-0 pointer-events-none transition-all duration-300">
+    <div id="toast-icon" class="w-8 h-8 rounded-full flex items-center justify-center"></div>
+    <p id="toast-message" class="text-white font-mono text-sm"></p>
 </div>
 
 <script>
@@ -250,6 +265,11 @@
     const closeBtn = document.getElementById('close-modal-btn');
     const overlay = document.getElementById('modal-overlay');
     const content = document.getElementById('modal-content');
+    const contactForm = document.getElementById('contact-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const btnText = document.getElementById('btn-text');
+    const btnIcon = document.getElementById('btn-icon');
+    const toast = document.getElementById('toast');
 
     const openModal = () => {
         modal.classList.remove('opacity-0', 'pointer-events-none');
@@ -265,9 +285,93 @@
         document.body.style.overflow = 'auto';
     };
 
-    openBtn.addEventListener('click', openModal);
-    closeBtn.addEventListener('click', closeModal);
-    overlay.addEventListener('click', closeModal);
+    if (openBtn) openBtn.addEventListener('click', openModal);
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (overlay) overlay.addEventListener('click', closeModal);
+
+    // Toast Logic
+    const showToast = (message, type = 'success') => {
+        const toastMessage = document.getElementById('toast-message');
+        const toastIcon = document.getElementById('toast-icon');
+        
+        toastMessage.textContent = message;
+        if (type === 'success') {
+            toastIcon.className = 'w-8 h-8 rounded-full flex items-center justify-center bg-accent-green/20 text-accent-green';
+            toastIcon.innerHTML = '<i class="fas fa-check"></i>';
+        } else {
+            toastIcon.className = 'w-8 h-8 rounded-full flex items-center justify-center bg-red-500/20 text-red-500';
+            toastIcon.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
+        }
+
+        toast.classList.remove('opacity-0', 'translate-y-10');
+        toast.classList.add('opacity-100', 'translate-y-0');
+
+        setTimeout(() => {
+            toast.classList.remove('opacity-100', 'translate-y-0');
+            toast.classList.add('opacity-0', 'translate-y-10');
+        }, 4000);
+    };
+
+    // Form Submission
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    if (contactForm) {
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Loading State
+            submitBtn.disabled = true;
+            btnText.textContent = 'sending...';
+            btnIcon.className = 'fas fa-spinner animate-spin text-xs';
+
+            const payload = {
+                email: document.getElementById('contact-email').value,
+                name: document.getElementById('contact-name').value,
+                message: document.getElementById('contact-message').value,
+            };
+
+            try {
+                const csrfToken = getCookie('csrftoken') || document.querySelector('[name=csrfmiddlewaretoken]').value;
+                const response = await fetch('/contact/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken,
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    showToast(result.message, 'success');
+                    contactForm.reset();
+                    setTimeout(closeModal, 1000);
+                } else {
+                    showToast(result.message || 'Something went wrong', 'error');
+                }
+            } catch (err) {
+                showToast('Network error. Please try again later.', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                btnText.textContent = 'me.send_message()';
+                btnIcon.className = 'fas fa-paper-plane text-xs';
+            }
+        });
+    }
 
     // Journey Map Reveal Animation
     const observerOptions = {
