@@ -7,11 +7,7 @@
     <title>{% block title %}Suphawit MeeSak | Portfolio{% endblock %}</title>
     
     <!-- Favicon -->
-    <!-- แบบใช้ Emoji เป็น Default (เปลี่ยน Emoji ตรง <text> ได้เลย เช่น 🧠, 🤖, 📊) -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
-    
-    <!-- เผื่ออยากใช้รูปภาพ (เอาไฟล์ favicon.png หรือ favicon.ico ไปวางในโฟลเดอร์ static/images/) -->
-    <!-- <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}"> -->
+    <link rel="icon" type="image/png" href="{% static 'portfolio/images/profile.png' %}">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -107,8 +103,8 @@
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
                 <div class="flex-shrink-0 flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-accent-blue to-accent-green flex items-center justify-center shadow-[0_0_15px_rgba(14,165,233,0.4)]">
-                        <i class="fas fa-brain text-white text-xl"></i>
+                    <div class="w-10 h-10 rounded-lg overflow-hidden shadow-[0_0_15px_rgba(14,165,233,0.4)]">
+                        <img src="{% static 'portfolio/images/profile.png' %}" alt="Profile" class="w-full h-full object-cover">
                     </div>
                     <a href="{% url 'about' %}" class="flex flex-col group">
                         <span class="font-bold text-xl tracking-wider text-white group-hover:text-accent-blue transition-colors font-mono">Suphawit MeeSak</span>
