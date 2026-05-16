@@ -1,3 +1,22 @@
+---
+design_tokens:
+  theme: "Developer / Hacker / Terminal"
+  framework: "Tailwind CSS"
+  colors:
+    background:
+      slate_950: "#020617"
+      slate_900: "#0f172a"
+      slate_800: "#1e293b"
+    accent:
+      neon_cyan: "#0ea5e9"
+      neon_emerald: "#10b981"
+  typography:
+    font_family:
+      mono: "JetBrains Mono"
+      sans: "Inter"
+      thai: "Kanit"
+---
+
 # DESIGN.md (Web Design & UI/UX Standards)
 
 ## UI/UX Core Theme
