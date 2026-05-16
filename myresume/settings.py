@@ -127,4 +127,5 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'meepalm32@gmail.com'
 EMAIL_HOST_PASSWORD = 'udqc uaos cwtt mlny' 
-DEFAULT_FROM_EMAIL = 'Portfolio Website <meepalm32@gmail.com>' 
+DEFAULT_FROM_EMAIL = 'Portfolio Website <meepalm32@gmail.com>'
+
