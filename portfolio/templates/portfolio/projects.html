@@ -1,196 +1,490 @@
 {% extends 'portfolio/base.html' %}
 
 {% block content %}
-<section id="projects" class="py-12">
+<section id="projects" class="py-6">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="mb-12">
+        <!-- Notebook / Terminal Header -->
+        <div class="mb-10 reveal-on-scroll">
             <h2 class="text-3xl font-bold text-white mb-2 flex items-center font-mono">
                 <span class="text-accent-green mr-3">In [1]:</span> portfolio.get_projects()
             </h2>
-            <p class="text-slate-400 font-mono text-sm ml-8"><span class="text-accent-blue">Out[1]:</span> Found 3
-                deployed models and analytical solutions.</p>
+            <p class="text-slate-400 font-mono text-sm ml-8">
+                <span class="text-accent-blue">Out[1]:</span> Found <span class="text-accent-green font-bold" id="total-project-count">16</span> projects across repositories. Filtered by active workspace.
+            </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-
-
-            <!-- Project 1 -->
-            <div
-                class="reveal-on-scroll bg-secondary-dark/40 backdrop-blur-md rounded-2xl overflow-hidden border border-slate-800 hover:border-accent-blue/50 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_15px_40px_rgba(14,165,233,0.15)] group flex flex-col relative h-full">
-                <div
-                    class="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-accent-blue to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+        <!-- Main IDE Workspace Container -->
+        <div class="flex flex-col lg:flex-row gap-8">
+            
+            <!-- Left Panel: IDE File Explorer Sidebar -->
+            <div class="w-full lg:w-[28%] flex-shrink-0 bg-secondary-dark/40 backdrop-blur-md rounded-2xl border border-slate-800/80 p-6 h-fit sticky top-28 reveal-on-scroll">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+                    <span class="font-mono text-xs text-slate-400 tracking-wider uppercase flex items-center gap-2">
+                        <i class="fas fa-folder-open text-accent-blue"></i> WORKSPACE EXPLORER
+                    </span>
+                    <button id="reset-filters" class="text-xs text-accent-blue hover:text-white transition-colors font-mono hidden" title="Clear Filters">
+                        <i class="fas fa-sync-alt"></i> reset
+                    </button>
                 </div>
-                <div class="p-8 flex-grow flex flex-col">
-                    <div class="flex items-center justify-between mb-4">
-                        <div
-                            class="w-12 h-12 rounded-xl bg-accent-blue/10 flex items-center justify-center border border-accent-blue/20">
-                            <i class="fas fa-users-cog text-accent-blue text-2xl"></i>
+                
+                <!-- Search & Filters for Mobile View -->
+                <div class="lg:hidden mb-4">
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-500">
+                            <i class="fas fa-search text-xs"></i>
+                        </span>
+                        <input type="text" id="mobile-search-input" placeholder="Search projects..." class="w-full bg-primary-dark/80 text-white pl-8 pr-3 py-2 rounded-xl text-sm border border-slate-800 focus:outline-none focus:border-accent-blue/50 focus:ring-1 focus:ring-accent-blue/30 font-mono">
+                    </div>
+                </div>
+
+                <!-- Tree View Explorer -->
+                <div class="space-y-3 font-mono text-sm">
+                    
+                    <!-- Root node -->
+                    <div class="flex items-center gap-2 text-slate-300 pb-1 border-b border-slate-800/30">
+                        <i class="fab fa-github text-accent-green"></i>
+                        <span class="font-semibold text-white">palmyz000 / repositories</span>
+                    </div>
+                    
+                    <!-- Repo Loop -->
+                    <div class="space-y-4 pl-2 mt-2">
+                        {% for cat in project_categories %}
+                        <div class="repo-node" data-category-id="{{ cat.id }}">
+                            <!-- Repo Title Row -->
+                            <div class="flex items-center justify-between group cursor-pointer py-1 px-2 rounded hover:bg-slate-800/50 transition-all duration-200" onclick="filterByCategory('{{ cat.id }}')">
+                                <div class="flex items-center gap-2 text-slate-200">
+                                    <span onclick="toggleCategoryFolder('{{ cat.id }}', event)" class="p-1 -m-1 hover:text-white transition-colors cursor-pointer" title="Toggle folder">
+                                        <i class="fas fa-chevron-down text-[10px] text-slate-500 transition-transform duration-300" id="chevron-{{ cat.id }}" style="transform: rotate(-90deg);"></i>
+                                    </span>
+                                    <i class="fas fa-folder text-amber-400 text-xs" id="folder-icon-{{ cat.id }}"></i>
+                                    <span class="hover:text-accent-blue transition-colors text-xs font-semibold truncate max-w-[150px] lg:max-w-none">{{ cat.name }}</span>
+                                </div>
+                                <a href="{{ cat.repo }}" target="_blank" onclick="event.stopPropagation();" class="opacity-0 group-hover:opacity-100 text-slate-500 hover:text-white transition-opacity duration-200 ml-2" title="Open repository in GitHub">
+                                    <i class="fab fa-github text-xs"></i>
+                                </a>
+                            </div>
+                            
+                            <!-- Subcategories container -->
+                            <div class="pl-4 mt-1 space-y-2 border-l border-slate-800/80 ml-2.5 hidden" id="container-{{ cat.id }}">
+                                {% for sub in cat.subcategories %}
+                                <div class="subcategory-node" data-subcategory-id="{{ sub.id }}">
+                                    <!-- Subcategory Row -->
+                                    <div class="flex items-center gap-2 text-slate-400 cursor-pointer py-0.5 px-1.5 rounded hover:bg-slate-800/30 transition-all duration-150" onclick="filterBySubcategory('{{ cat.id }}', '{{ sub.id }}')">
+                                        <span onclick="toggleSubcategoryFolder('{{ sub.id }}', event)" class="p-1 -m-1 hover:text-white transition-colors cursor-pointer" title="Toggle folder">
+                                            <i class="fas fa-chevron-down text-[9px] text-slate-600 transition-transform duration-300" id="chevron-{{ sub.id }}" style="transform: rotate(-90deg);"></i>
+                                        </span>
+                                        <i class="fas fa-folder text-yellow-500/80 text-xs" id="folder-icon-{{ sub.id }}"></i>
+                                        <span class="hover:text-accent-blue text-xs transition-colors">{{ sub.name }}</span>
+                                    </div>
+                                    
+                                    <!-- Project Files list -->
+                                    <div class="pl-4 mt-0.5 space-y-1 border-l border-slate-800/50 ml-1.5 hidden" id="container-{{ sub.id }}">
+                                        {% for project in sub.projects %}
+                                        <div class="flex items-center justify-between group cursor-pointer py-0.5 px-1.5 rounded hover:bg-slate-800/40 text-slate-400 hover:text-white transition-all duration-150" 
+                                             onclick="focusProject('{{ project.name }}')">
+                                            <div class="flex items-center gap-1.5 text-xs truncate max-w-[140px] lg:max-w-none">
+                                                <i class="fab fa-python text-accent-blue text-[11px]"></i>
+                                                <span class="font-mono text-[11px] truncate">{{ project.name }}.py</span>
+                                            </div>
+                                            <a href="{{ project.repo_url }}" target="_blank" onclick="event.stopPropagation();" class="opacity-0 group-hover:opacity-100 text-slate-600 hover:text-accent-green transition-opacity duration-200" title="Open source file on GitHub">
+                                                <i class="fas fa-external-link-alt text-[10px]"></i>
+                                            </a>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
                         </div>
-                        <i class="fas fa-code-branch text-slate-600"></i>
+                        {% endfor %}
                     </div>
-                    <h3
-                        class="text-2xl font-bold text-white mb-3 font-sans group-hover:text-accent-blue transition-colors">
-                        Bank Customer Churn Prediction</h3>
-                    <p class="text-slate-400 text-sm mb-6 flex-grow leading-relaxed">
-                        An end-to-end machine learning pipeline to predict customer churn in the banking sector. Built
-                        robust predictive models and deployed them in a scalable containerized environment.
-                    </p>
+                </div>
 
-                    <div class="flex flex-wrap gap-2 mb-8 mt-auto">
-                        <span
-                            class="px-3 py-1 bg-primary-dark text-slate-300 text-xs rounded-full font-mono border border-slate-700/50">End-to-end
-                            ML</span>
-                        <span
-                            class="px-3 py-1 bg-primary-dark text-slate-300 text-xs rounded-full font-mono border border-slate-700/50">EDA</span>
-                        <span
-                            class="px-3 py-1 bg-primary-dark text-slate-300 text-xs rounded-full font-mono border border-slate-700/50">XGBoost</span>
-                        <span
-                            class="px-3 py-1 bg-primary-dark text-accent-blue/80 text-xs rounded-full font-mono border border-accent-blue/30">Docker</span>
-                        <span
-                            class="px-3 py-1 bg-primary-dark text-accent-blue/80 text-xs rounded-full font-mono border border-accent-blue/30">Kubernetes</span>
+                <!-- Footer tip / workspace status -->
+                <div class="mt-8 pt-4 border-t border-slate-800/80 font-mono text-[10px] text-slate-500 space-y-1.5">
+                    <div class="flex items-center gap-2">
+                        <span class="w-1.5 h-1.5 bg-accent-green rounded-full animate-ping"></span>
+                        <span>Terminal status: Online</span>
                     </div>
-
-                    <a href="#"
-                        class="inline-flex items-center justify-center w-full bg-primary-dark hover:bg-slate-800 text-white border border-slate-700 hover:border-accent-blue px-4 py-3 rounded-xl transition-all duration-300 font-mono text-sm group/btn">
-                        <i class="fab fa-github mr-2 text-lg group-hover/btn:text-accent-blue transition-colors"></i>
-                        GitHub Repo
-                    </a>
+                    <div>Press python files to inspect details.</div>
                 </div>
             </div>
-
-            <!-- Project 2 -->
-            <div
-                class="reveal-on-scroll bg-secondary-dark/40 backdrop-blur-md rounded-2xl overflow-hidden border border-slate-800 hover:border-purple-500/50 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_15px_40px_rgba(168,85,247,0.15)] group flex flex-col relative h-full">
-                <div
-                    class="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-purple-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+            
+            <!-- Right Panel: Workspace Area -->
+            <div class="w-full lg:w-[72%] flex-grow flex flex-col gap-6 reveal-on-scroll">
+                
+                <!-- Editor Top Header Controls -->
+                <div class="bg-secondary-dark/40 backdrop-blur-md rounded-2xl border border-slate-800/80 p-4 flex flex-col md:flex-row gap-4 items-center justify-between">
+                    
+                    <!-- Search Input (Desktop View) -->
+                    <div class="w-full md:w-1/2 relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-500">
+                            <i class="fas fa-search text-xs"></i>
+                        </span>
+                        <input type="text" id="search-input" placeholder="Search files, tags or keywords..." class="w-full bg-primary-dark/60 text-white pl-9 pr-3 py-2.5 rounded-xl text-sm border border-slate-800 focus:outline-none focus:border-accent-blue/50 focus:ring-1 focus:ring-accent-blue/30 font-mono transition-all duration-300">
+                    </div>
+                    
+                    <!-- Filter status indicator -->
+                    <div class="flex items-center gap-2 font-mono text-xs">
+                        <span class="text-slate-500">Active Filter:</span>
+                        <span id="active-filter-badge" class="px-2.5 py-1 bg-primary-dark text-accent-green border border-accent-green/20 rounded-md font-semibold">ALL REPOS</span>
+                    </div>
                 </div>
-                <div class="p-8 flex-grow flex flex-col">
-                    <div class="flex items-center justify-between mb-4">
-                        <div
-                            class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center border border-purple-500/20">
-                            <i class="fas fa-brain text-purple-400 text-2xl"></i>
-                        </div>
-                        <i class="fas fa-code-branch text-slate-600"></i>
-                    </div>
-                    <h3
-                        class="text-2xl font-bold text-white mb-3 font-sans group-hover:text-purple-400 transition-colors">
-                        Medical CV Models <br><span class="text-lg text-slate-300 font-normal">(Brain Tumor
-                            Detection)</span></h3>
-                    <p class="text-slate-400 text-sm mb-6 flex-grow leading-relaxed">
-                        An interactive web application powered by deep learning for detecting brain tumors from medical
-                        imagery, assisting in faster and more accurate diagnostics.
-                    </p>
 
-                    <div class="flex flex-wrap gap-2 mb-8 mt-auto">
-                        <span
-                            class="px-3 py-1 bg-primary-dark text-slate-300 text-xs rounded-full font-mono border border-slate-700/50">Deep
-                            Learning</span>
-                        <span
-                            class="px-3 py-1 bg-primary-dark text-slate-300 text-xs rounded-full font-mono border border-slate-700/50">Computer
-                            Vision</span>
-                        <span
-                            class="px-3 py-1 bg-primary-dark text-purple-400/80 text-xs rounded-full font-mono border border-purple-500/30">Interactive
-                            Web App</span>
+                <!-- Empty State Message -->
+                <div id="empty-state" class="hidden flex-col items-center justify-center py-20 text-center bg-secondary-dark/20 border border-slate-800 rounded-3xl">
+                    <div class="w-16 h-16 rounded-full bg-slate-800/40 flex items-center justify-center mb-4 border border-slate-800 text-slate-500">
+                        <i class="fas fa-file-code text-2xl"></i>
                     </div>
-
-                    <a href="#"
-                        class="inline-flex items-center justify-center w-full bg-primary-dark hover:bg-slate-800 text-white border border-slate-700 hover:border-purple-500 px-4 py-3 rounded-xl transition-all duration-300 font-mono text-sm group/btn">
-                        <i class="fab fa-github mr-2 text-lg group-hover/btn:text-purple-400 transition-colors"></i>
-                        GitHub Repo
-                    </a>
+                    <h3 class="text-lg font-bold text-white mb-1 font-mono">No matching files found</h3>
+                    <p class="text-slate-400 text-sm max-w-xs font-sans">Try widening your search terms or selecting another repository folder in the workspace explorer.</p>
                 </div>
-            </div>
 
-            <!-- Project 3 -->
-            <div
-                class="reveal-on-scroll bg-secondary-dark/40 backdrop-blur-md rounded-2xl overflow-hidden border border-slate-800 hover:border-pink-500/50 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_15px_40px_rgba(236,72,153,0.15)] group flex flex-col relative h-full">
-                <div
-                    class="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-pink-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                </div>
-                <div class="p-8 flex-grow flex flex-col">
-                    <div class="flex items-center justify-between mb-4">
-                        <div
-                            class="w-12 h-12 rounded-xl bg-pink-500/10 flex items-center justify-center border border-pink-500/20">
-                            <i class="fas fa-microscope text-pink-400 text-2xl"></i>
-                        </div>
-                        <i class="fas fa-code-branch text-slate-600"></i>
-                    </div>
-                    <h3
-                        class="text-2xl font-bold text-white mb-3 font-sans group-hover:text-pink-400 transition-colors">
-                        Medical CV Models <br><span class="text-lg text-slate-300 font-normal">(Skin Diseases
-                            Detection)</span></h3>
-                    <p class="text-slate-400 text-sm mb-6 flex-grow leading-relaxed">
-                        A classification system utilizing deep learning to identify various skin diseases, provided
-                        through a highly accessible and user-friendly web interface.
-                    </p>
+                <!-- Projects Dynamic Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="projects-grid">
+                    
+                    {% for cat in project_categories %}
+                        {% for sub in cat.subcategories %}
+                            {% for project in sub.projects %}
+                            <!-- Project Card -->
+                            <div class="project-card bg-secondary-dark/30 backdrop-blur-md rounded-2xl overflow-hidden border border-slate-800/80 hover:border-slate-700/80 transition-all duration-300 flex flex-col h-full relative"
+                                 id="card-{{ project.name }}"
+                                 data-category="{{ cat.id }}"
+                                 data-subcategory="{{ sub.id }}"
+                                 data-name="{{ project.name|lower }}"
+                                 data-display-name="{{ project.display_name|lower }}"
+                                 data-description="{{ project.description|lower }}"
+                                 data-tags="{% for tag in project.tags %}{{ tag|lower }} {% endfor %}">
+                                
+                                <!-- Category Glowing Accent Border -->
+                                <div class="absolute top-0 inset-x-0 h-[2px] transition-all duration-300 
+                                     {% if cat.id == 'ml-journey' %}bg-gradient-to-r from-accent-blue via-accent-blue/40 to-transparent{% elif cat.id == 'deep-learning' %}bg-gradient-to-r from-purple-500 via-purple-500/40 to-transparent{% else %}bg-gradient-to-r from-accent-green via-accent-green/40 to-transparent{% endif %}">
+                                </div>
 
-                    <div class="flex flex-wrap gap-2 mb-8 mt-auto">
-                        <span
-                            class="px-3 py-1 bg-primary-dark text-slate-300 text-xs rounded-full font-mono border border-slate-700/50">Deep
-                            Learning</span>
-                        <span
-                            class="px-3 py-1 bg-primary-dark text-slate-300 text-xs rounded-full font-mono border border-slate-700/50">Classification</span>
-                        <span
-                            class="px-3 py-1 bg-primary-dark text-pink-400/80 text-xs rounded-full font-mono border border-pink-500/30">Web
-                            Interface</span>
-                    </div>
+                                <div class="p-6 flex-grow flex flex-col">
+                                    <!-- Card Header -->
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 rounded-xl bg-primary-dark/80 flex items-center justify-center border border-slate-800/80">
+                                                <i class="{{ project.icon }} {% if cat.id == 'ml-journey' %}text-accent-blue{% elif cat.id == 'deep-learning' %}text-purple-400{% else %}text-accent-green{% endif %} text-lg"></i>
+                                            </div>
+                                            <div>
+                                                <span class="text-[10px] font-mono text-slate-500 uppercase tracking-widest block">{{ sub.name }}</span>
+                                                <span class="text-[11px] font-mono text-accent-green/80 flex items-center gap-1">
+                                                    <i class="fab fa-python text-[10px]"></i> {{ project.name }}.py
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <i class="fas fa-file-code text-slate-600/80 text-sm"></i>
+                                    </div>
 
-                    <a href="#"
-                        class="inline-flex items-center justify-center w-full bg-primary-dark hover:bg-slate-800 text-white border border-slate-700 hover:border-pink-500 px-4 py-3 rounded-xl transition-all duration-300 font-mono text-sm group/btn">
-                        <i class="fab fa-github mr-2 text-lg group-hover/btn:text-pink-400 transition-colors"></i>
-                        GitHub Repo
-                    </a>
-                </div>
-            </div>
+                                    <!-- Card Title -->
+                                    <h3 class="text-lg font-bold text-white mb-2 font-sans group-hover:text-accent-blue transition-colors">
+                                        {{ project.display_name }}
+                                    </h3>
 
-            <!-- Project 4 -->
-            <div
-                class="reveal-on-scroll bg-secondary-dark/40 backdrop-blur-md rounded-2xl overflow-hidden border border-slate-800 hover:border-accent-green/50 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_15px_40px_rgba(16,185,129,0.15)] group flex flex-col relative h-full">
-                <div
-                    class="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-accent-green to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                </div>
-                <div class="p-8 flex-grow flex flex-col">
-                    <div class="flex items-center justify-between mb-4">
-                        <div
-                            class="w-12 h-12 rounded-xl bg-accent-green/10 flex items-center justify-center border border-accent-green/20 relative">
-                            <i class="fas fa-microphone-alt text-accent-green text-xl"></i>
-                            <div
-                                class="absolute -top-2 -right-2 bg-yellow-500 text-primary-dark text-[10px] font-bold px-2 py-1 rounded-full shadow-lg">
-                                AWARDED</div>
-                        </div>
-                        <i class="fas fa-code-branch text-slate-600"></i>
-                    </div>
-                    <h3
-                        class="text-2xl font-bold text-white mb-3 font-sans group-hover:text-accent-green transition-colors">
-                        PHQ-9 Speech to Text <br><span class="text-lg text-slate-300 font-normal">(Depression
-                            Analysis)</span></h3>
-                    <p class="text-slate-400 text-sm mb-4 flex-grow leading-relaxed">
-                        A speech-to-text NLP tool for psychological assessment utilizing sentiment analysis. <br><span
-                            class="text-yellow-500 font-medium mt-2 block"><i class="fas fa-medal mr-1"></i> Silver
-                            Medal – Thailand New Gen Inventors Award 2025</span>
-                    </p>
+                                    <!-- Card Description (Thai) -->
+                                    <p class="text-slate-400 text-xs mb-6 flex-grow leading-relaxed">
+                                        {{ project.description }}
+                                    </p>
 
-                    <div class="flex flex-wrap gap-2 mb-8 mt-auto">
-                        <span
-                            class="px-3 py-1 bg-primary-dark text-slate-300 text-xs rounded-full font-mono border border-slate-700/50">OpenAI
-                            Whisper</span>
-                        <span
-                            class="px-3 py-1 bg-primary-dark text-slate-300 text-xs rounded-full font-mono border border-slate-700/50">NLP
-                            Transformer</span>
-                        <span
-                            class="px-3 py-1 bg-primary-dark text-accent-green/80 text-xs rounded-full font-mono border border-accent-green/30">Sentiment
-                            Analysis</span>
-                    </div>
+                                    <!-- Tags -->
+                                    <div class="flex flex-wrap gap-1.5 mb-6 mt-auto">
+                                        {% for tag in project.tags %}
+                                        <span class="px-2.5 py-0.5 bg-primary-dark/80 text-slate-400 text-[10px] rounded-md font-mono border border-slate-800/50">
+                                            {{ tag }}
+                                        </span>
+                                        {% endfor %}
+                                    </div>
 
-                    <a href="#"
-                        class="inline-flex items-center justify-center w-full bg-primary-dark hover:bg-slate-800 text-white border border-slate-700 hover:border-accent-green px-4 py-3 rounded-xl transition-all duration-300 font-mono text-sm group/btn">
-                        <i class="fab fa-github mr-2 text-lg group-hover/btn:text-accent-green transition-colors"></i>
-                        GitHub Repo
-                    </a>
+                                    <!-- Action Buttons -->
+                                    <div class="flex items-center gap-3">
+                                        <a href="{{ project.repo_url }}" target="_blank"
+                                           class="flex-grow inline-flex items-center justify-center bg-primary-dark/60 hover:bg-slate-800 text-white border border-slate-800 hover:border-slate-600 px-3 py-2.5 rounded-xl transition-all duration-300 font-mono text-xs group/btn">
+                                            <i class="fab fa-github mr-2 text-sm group-hover/btn:text-accent-blue transition-colors"></i>
+                                            Git Repo
+                                        </a>
+                                        <a href="{{ cat.repo }}" target="_blank" title="Go to Repository"
+                                           class="w-10 h-10 flex items-center justify-center bg-primary-dark/40 hover:bg-slate-800 border border-slate-800/80 rounded-xl hover:text-accent-blue transition-all duration-300">
+                                            <i class="fas fa-code-branch text-xs"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% endfor %}
+                    {% endfor %}
+
                 </div>
             </div>
 
         </div>
     </div>
 </section>
-{% endblock %}
+
+<!-- Advanced Interactive JavaScript for Workspace -->
+<script>
+    let activeCategory = 'all';
+    let activeSubcategory = 'all';
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const searchInput = document.getElementById('search-input');
+        const mobileSearchInput = document.getElementById('mobile-search-input');
+        const resetBtn = document.getElementById('reset-filters');
+
+        if(searchInput) {
+            searchInput.addEventListener('input', filterProjects);
+        }
+        if(mobileSearchInput) {
+            mobileSearchInput.addEventListener('input', (e) => {
+                searchInput.value = e.target.value;
+                filterProjects();
+            });
+        }
+        if(resetBtn) {
+            resetBtn.addEventListener('click', clearAllFilters);
+        }
+
+        // Initialize total count
+        updateProjectCount();
+    });
+
+    function filterProjects() {
+        const query = document.getElementById('search-input').value.toLowerCase().trim();
+        const cards = document.querySelectorAll('.project-card');
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+            const matchesCategory = (activeCategory === 'all' || card.dataset.category === activeCategory);
+            const matchesSubcategory = (activeSubcategory === 'all' || card.dataset.subcategory === activeSubcategory);
+            
+            const cardName = card.dataset.name;
+            const cardDisplayName = card.dataset.displayName;
+            const cardDesc = card.dataset.description;
+            const cardTags = card.dataset.tags;
+
+            const matchesSearch = !query || 
+                cardName.includes(query) || 
+                cardDisplayName.includes(query) || 
+                cardDesc.includes(query) || 
+                cardTags.includes(query);
+
+            if(matchesCategory && matchesSubcategory && matchesSearch) {
+                card.style.display = 'flex';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        // Toggle Empty State
+        const emptyState = document.getElementById('empty-state');
+        if(visibleCount === 0) {
+            emptyState.classList.remove('hidden');
+            emptyState.classList.add('flex');
+        } else {
+            emptyState.classList.add('hidden');
+            emptyState.classList.remove('flex');
+        }
+
+        // Update Reset Button Visibility
+        const resetBtn = document.getElementById('reset-filters');
+        if(activeCategory !== 'all' || activeSubcategory !== 'all' || query) {
+            resetBtn.classList.remove('hidden');
+        } else {
+            resetBtn.classList.add('hidden');
+        }
+
+        updateProjectCount(visibleCount);
+    }
+
+    function toggleCategoryFolder(catId, event) {
+        if (event) event.stopPropagation();
+        const container = document.getElementById(`container-${catId}`);
+        const chevron = document.getElementById(`chevron-${catId}`);
+        const icon = document.getElementById(`folder-icon-${catId}`);
+        
+        if (container) {
+            const isHidden = container.classList.toggle('hidden');
+            if (chevron) {
+                chevron.style.transform = isHidden ? 'rotate(-90deg)' : 'rotate(0deg)';
+            }
+            if (icon) {
+                icon.className = isHidden ? "fas fa-folder text-amber-400 text-xs" : "fas fa-folder-open text-amber-400 text-xs";
+            }
+        }
+    }
+
+    function toggleSubcategoryFolder(subId, event) {
+        if (event) event.stopPropagation();
+        const container = document.getElementById(`container-${subId}`);
+        const chevron = document.getElementById(`chevron-${subId}`);
+        const icon = document.getElementById(`folder-icon-${subId}`);
+        
+        if (container) {
+            const isHidden = container.classList.toggle('hidden');
+            if (chevron) {
+                chevron.style.transform = isHidden ? 'rotate(-90deg)' : 'rotate(0deg)';
+            }
+            if (icon) {
+                icon.className = isHidden ? "fas fa-folder text-yellow-500/80 text-xs" : "fas fa-folder-open text-yellow-500/80 text-xs";
+            }
+        }
+    }
+
+    function filterByCategory(catId) {
+        // Apply grid filtering
+        if(activeCategory === catId) {
+            // Toggle off to show all
+            clearAllFilters();
+            return;
+        }
+        
+        activeCategory = catId;
+        activeSubcategory = 'all';
+
+        // When a category row is clicked, ENSURE its folder container is expanded!
+        const container = document.getElementById(`container-${catId}`);
+        const chevron = document.getElementById(`chevron-${catId}`);
+        const icon = document.getElementById(`folder-icon-${catId}`);
+        if (container) {
+            container.classList.remove('hidden');
+            if (chevron) chevron.style.transform = 'rotate(0deg)';
+            if (icon) icon.className = "fas fa-folder-open text-amber-400 text-xs";
+        }
+
+        // Styling sidebar node active state
+        document.querySelectorAll('.repo-node').forEach(node => {
+            const id = node.dataset.categoryId;
+            if(id === catId) {
+                node.classList.add('bg-slate-800/40');
+            } else {
+                node.classList.remove('bg-slate-800/40');
+            }
+        });
+
+        // Update filter badge
+        const badge = document.getElementById('active-filter-badge');
+        let badgeText = 'ALL REPOS';
+        if(catId === 'ml-journey') badgeText = 'MACHINE LEARNING';
+        if(catId === 'deep-learning') badgeText = 'DEEP LEARNING';
+        if(catId === 'ai-agents-rag') badgeText = 'AI AGENTS & RAG';
+        badge.innerText = badgeText;
+        badge.className = `px-2.5 py-1 bg-primary-dark rounded-md font-semibold border ${
+            catId === 'ml-journey' ? 'text-accent-blue border-accent-blue/20' : 
+            catId === 'deep-learning' ? 'text-purple-400 border-purple-500/20' : 
+            'text-accent-green border-accent-green/20'
+        }`;
+
+        filterProjects();
+    }
+
+    function filterBySubcategory(catId, subId) {
+        activeCategory = catId;
+        activeSubcategory = subId;
+
+        // When a subcategory row is clicked, ENSURE both category and subcategory folders are expanded!
+        const catContainer = document.getElementById(`container-${catId}`);
+        const catChevron = document.getElementById(`chevron-${catId}`);
+        const catIcon = document.getElementById(`folder-icon-${catId}`);
+        if (catContainer) {
+            catContainer.classList.remove('hidden');
+            if (catChevron) catChevron.style.transform = 'rotate(0deg)';
+            if (catIcon) catIcon.className = "fas fa-folder-open text-amber-400 text-xs";
+        }
+
+        const subContainer = document.getElementById(`container-${subId}`);
+        const subChevron = document.getElementById(`chevron-${subId}`);
+        const subIcon = document.getElementById(`folder-icon-${subId}`);
+        if (subContainer) {
+            subContainer.classList.remove('hidden');
+            if (subChevron) subChevron.style.transform = 'rotate(0deg)';
+            if (subIcon) subIcon.className = "fas fa-folder-open text-yellow-500/80 text-xs";
+        }
+
+        // Visual update on subcategories
+        document.querySelectorAll('.subcategory-node').forEach(node => {
+            const id = node.dataset.subcategoryId;
+            if(id === subId) {
+                node.querySelector('div').classList.add('bg-slate-800/60', 'text-white');
+            } else {
+                node.querySelector('div').classList.remove('bg-slate-800/60', 'text-white');
+            }
+        });
+
+        // Update badge
+        const badge = document.getElementById('active-filter-badge');
+        badge.innerText = subId.replace('ml-', '').replace('dl-', '').replace('rag-', '').toUpperCase();
+
+        filterProjects();
+    }
+
+    function clearAllFilters() {
+        activeCategory = 'all';
+        activeSubcategory = 'all';
+        document.getElementById('search-input').value = '';
+        const mobInput = document.getElementById('mobile-search-input');
+        if(mobInput) mobInput.value = '';
+
+        // Reset styling and collapse all folders to default state (initial page load state)
+        document.querySelectorAll('.repo-node').forEach(node => {
+            node.classList.remove('bg-slate-800/40');
+            const id = node.dataset.categoryId;
+            const container = document.getElementById(`container-${id}`);
+            const chevron = document.getElementById(`chevron-${id}`);
+            const icon = document.getElementById(`folder-icon-${id}`);
+            if(container) container.classList.add('hidden');
+            if(chevron) chevron.style.transform = 'rotate(-90deg)';
+            if(icon) icon.className = "fas fa-folder text-amber-400 text-xs";
+        });
+        document.querySelectorAll('.subcategory-node').forEach(node => {
+            node.querySelector('div').classList.remove('bg-slate-800/60', 'text-white');
+            const id = node.dataset.subcategoryId;
+            const container = document.getElementById(`container-${id}`);
+            const chevron = document.getElementById(`chevron-${id}`);
+            const icon = document.getElementById(`folder-icon-${id}`);
+            if(container) container.classList.add('hidden');
+            if(chevron) chevron.style.transform = 'rotate(-90deg)';
+            if(icon) icon.className = "fas fa-folder text-yellow-500/80 text-xs";
+        });
+
+        const badge = document.getElementById('active-filter-badge');
+        badge.innerText = 'ALL REPOS';
+        badge.className = 'px-2.5 py-1 bg-primary-dark text-accent-green border border-accent-green/20 rounded-md font-semibold';
+
+        filterProjects();
+    }
+
+    function focusProject(projectName) {
+        // Reset category/sub filter to make it visible
+        clearAllFilters();
+
+        const card = document.getElementById(`card-${projectName}`);
+        if(card) {
+            // Scroll to it
+            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            // Add custom neon highlighting effect
+            card.classList.remove('border-slate-800/80');
+            card.classList.add('border-accent-green', 'shadow-[0_0_25px_rgba(16,185,129,0.35)]', 'scale-[1.02]');
+            
+            setTimeout(() => {
+                card.classList.remove('border-accent-green', 'shadow-[0_0_25px_rgba(16,185,129,0.35)]', 'scale-[1.02]');
+                card.classList.add('border-slate-800/80');
+            }, 2500);
+        }
+    }
+
+    function updateProjectCount(count) {
+        const countEl = document.getElementById('total-project-count');
+        if(countEl) {
+            if(count !== undefined) {
+                countEl.innerText = count;
+            } else {
+                const totalCards = document.querySelectorAll('.project-card').length;
+                countEl.innerText = totalCards;
+            }
+        }
+    }
+</script>
+{% endblock %}
